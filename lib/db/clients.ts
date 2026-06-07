@@ -50,3 +50,9 @@ export async function updateClient(id: string, input: ClientFormInput) {
   const row = result.rows[0];
   return row ? toClientRecord(row as ClientRow) : null;
 }
+
+export async function deleteClient(id: string) {
+  const result = await query(`DELETE FROM clients WHERE id = $1 RETURNING id`, [id]);
+
+  return result.rowCount === 1;
+}

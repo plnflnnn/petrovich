@@ -1,7 +1,9 @@
 "use client";
 
+import { AdminDeleteSection } from "@/app/admin/_components/admin-delete-section";
 import { AdminPageHeader } from "@/app/admin/_components/admin-page-header";
 import { PillButton } from "@/app/components/ui/pill-button";
+import { confirmDeleteClient } from "@/lib/admin/confirm-delete";
 import { formatAdminDate } from "@/lib/admin/list-utils";
 import type { ClientRecord } from "@/lib/admin/types";
 import {
@@ -19,6 +21,7 @@ type ClientFormProps = {
   defaultValues: ClientFormInput;
   client?: ClientRecord;
   onSubmit: (values: ClientFormInput) => Promise<void> | void;
+  onDelete?: () => Promise<void> | void;
   submitLabel: string;
   backHref?: string;
 };
@@ -28,6 +31,7 @@ export function ClientForm({
   defaultValues,
   client,
   onSubmit,
+  onDelete,
   submitLabel,
   backHref = "/admin/clients",
 }: ClientFormProps) {
@@ -184,6 +188,22 @@ export function ClientForm({
           </Link>
         </div>
       </form>
+
+      {mode === "edit" && onDelete && client ? (
+        <AdminDeleteSection
+          title="Удаление клиента"
+          description="Клиент будет удалён из базы без возможности восстановления."
+          buttonLabel="Удалить клиента"
+          deletingLabel="Удаляем…"
+          disabled={isSubmitting}
+          onError={(message) => setStatusMessage(message)}
+          onConfirm={() => confirmDeleteClient(client.name)}
+          onDelete={async () => {
+            setStatusMessage(null);
+            await onDelete();
+          }}
+        />
+      ) : null}
     </div>
   );
 }

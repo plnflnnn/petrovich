@@ -20,6 +20,7 @@ type ClientsContextValue = {
   getClient: (id: string) => ClientRecord | undefined;
   addClient: (values: ClientFormInput) => Promise<ClientRecord>;
   updateClient: (id: string, values: ClientFormInput) => Promise<ClientRecord>;
+  deleteClient: (id: string) => Promise<void>;
 };
 
 const ClientsContext = createContext<ClientsContextValue | null>(null);
@@ -113,6 +114,21 @@ export function ClientsProvider({ children }: { children: ReactNode }) {
     return data.client;
   }, []);
 
+  const deleteClient = useCallback(async (id: string) => {
+    const response = await fetch(`/api/admin/clients/${id}`, {
+      method: "DELETE",
+      credentials: "same-origin",
+    });
+
+    const data = await readJson<{ ok?: boolean; error?: string }>(response);
+
+    if (!response.ok || !data.ok) {
+      throw new Error(data.error ?? "Не удалось удалить клиента");
+    }
+
+    setClients((current) => current.filter((client) => client.id !== id));
+  }, []);
+
   const value = useMemo(
     () => ({
       clients,
@@ -122,8 +138,9 @@ export function ClientsProvider({ children }: { children: ReactNode }) {
       getClient,
       addClient,
       updateClient,
+      deleteClient,
     }),
-    [clients, isLoading, error, refreshClients, getClient, addClient, updateClient],
+    [clients, isLoading, error, refreshClients, getClient, addClient, updateClient, deleteClient],
   );
 
   return (

@@ -1,5 +1,5 @@
 import { requireAdminApiSession } from "@/lib/auth/require-admin-api";
-import { getRequestById, updateRequest } from "@/lib/db/requests";
+import { getRequestById, updateRequest, deleteRequest } from "@/lib/db/requests";
 import {
   contactRequestFormSchema,
   normalizeContactRequestFormValues,
@@ -78,6 +78,34 @@ export async function PATCH(request: Request, context: RouteContext) {
     console.error("[admin/requests/:id] PATCH failed:", error);
     return NextResponse.json(
       { ok: false, error: "Не удалось сохранить заявку" },
+      { status: 500 },
+    );
+  }
+}
+
+export async function DELETE(_request: Request, context: RouteContext) {
+  const auth = await requireAdminApiSession();
+  if (auth.errorResponse) {
+    return auth.errorResponse;
+  }
+
+  const { id } = await context.params;
+
+  try {
+    const deleted = await deleteRequest(id);
+
+    if (!deleted) {
+      return NextResponse.json(
+        { ok: false, error: "Заявка не найдена" },
+        { status: 404 },
+      );
+    }
+
+    return NextResponse.json({ ok: true });
+  } catch (error) {
+    console.error("[admin/requests/:id] DELETE failed:", error);
+    return NextResponse.json(
+      { ok: false, error: "Не удалось удалить заявку" },
       { status: 500 },
     );
   }

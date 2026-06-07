@@ -24,6 +24,7 @@ type ContactRequestsContextValue = {
     id: string,
     values: ContactRequestEditableInput,
   ) => Promise<ContactRequestRecord>;
+  deleteRequest: (id: string) => Promise<void>;
 };
 
 const ContactRequestsContext =
@@ -105,6 +106,21 @@ export function ContactRequestsProvider({ children }: { children: ReactNode }) {
     [],
   );
 
+  const deleteRequest = useCallback(async (id: string) => {
+    const response = await fetch(`/api/admin/requests/${id}`, {
+      method: "DELETE",
+      credentials: "same-origin",
+    });
+
+    const data = await readJson<{ ok?: boolean; error?: string }>(response);
+
+    if (!response.ok || !data.ok) {
+      throw new Error(data.error ?? "Не удалось удалить заявку");
+    }
+
+    setRequests((current) => current.filter((request) => request.id !== id));
+  }, []);
+
   const value = useMemo(
     () => ({
       requests,
@@ -113,8 +129,9 @@ export function ContactRequestsProvider({ children }: { children: ReactNode }) {
       refreshRequests,
       getRequest,
       updateRequest,
+      deleteRequest,
     }),
-    [requests, isLoading, error, refreshRequests, getRequest, updateRequest],
+    [requests, isLoading, error, refreshRequests, getRequest, updateRequest, deleteRequest],
   );
 
   return (

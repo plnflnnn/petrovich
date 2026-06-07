@@ -1,5 +1,5 @@
 import { requireAdminApiSession } from "@/lib/auth/require-admin-api";
-import { getClientById, updateClient } from "@/lib/db/clients";
+import { getClientById, updateClient, deleteClient } from "@/lib/db/clients";
 import {
   clientFormSchema,
   normalizeClientFormValues,
@@ -78,6 +78,34 @@ export async function PATCH(request: Request, context: RouteContext) {
     console.error("[admin/clients/:id] PATCH failed:", error);
     return NextResponse.json(
       { ok: false, error: "Не удалось сохранить клиента" },
+      { status: 500 },
+    );
+  }
+}
+
+export async function DELETE(_request: Request, context: RouteContext) {
+  const auth = await requireAdminApiSession();
+  if (auth.errorResponse) {
+    return auth.errorResponse;
+  }
+
+  const { id } = await context.params;
+
+  try {
+    const deleted = await deleteClient(id);
+
+    if (!deleted) {
+      return NextResponse.json(
+        { ok: false, error: "Клиент не найден" },
+        { status: 404 },
+      );
+    }
+
+    return NextResponse.json({ ok: true });
+  } catch (error) {
+    console.error("[admin/clients/:id] DELETE failed:", error);
+    return NextResponse.json(
+      { ok: false, error: "Не удалось удалить клиента" },
       { status: 500 },
     );
   }

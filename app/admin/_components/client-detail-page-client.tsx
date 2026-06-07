@@ -13,7 +13,7 @@ type ClientDetailPageClientProps = {
 
 export function ClientDetailPageClient({ clientId }: ClientDetailPageClientProps) {
   const router = useRouter();
-  const { getClient, addClient, updateClient, isLoading } = useClients();
+  const { getClient, addClient, updateClient, deleteClient, isLoading } = useClients();
   const isCreateMode = clientId === "new";
 
   if (isCreateMode) {
@@ -56,6 +56,11 @@ export function ClientDetailPageClient({ clientId }: ClientDetailPageClientProps
       submitLabel="Сохранить изменения"
       onSubmit={async (values) => {
         await updateClient(client.id, values);
+      }}
+      onDelete={async () => {
+        await deleteClient(client.id);
+        router.push("/admin/clients");
+        router.refresh();
       }}
     />
   );

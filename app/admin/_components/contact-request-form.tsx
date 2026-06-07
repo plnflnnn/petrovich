@@ -1,8 +1,10 @@
 "use client";
 
+import { AdminDeleteSection } from "@/app/admin/_components/admin-delete-section";
 import { AdminPageHeader } from "@/app/admin/_components/admin-page-header";
 import { PillButton } from "@/app/components/ui/pill-button";
 import { formatAdminDate } from "@/lib/admin/list-utils";
+import { confirmDeleteRequest } from "@/lib/admin/confirm-delete";
 import {
   contactRequestFormSchema,
   type ContactRequestEditableInput,
@@ -18,6 +20,7 @@ type ContactRequestFormProps = {
   createdAt: string;
   source: string;
   onSubmit: (values: ContactRequestEditableInput) => Promise<void> | void;
+  onDelete?: () => Promise<void> | void;
   backHref?: string;
 };
 
@@ -26,6 +29,7 @@ export function ContactRequestForm({
   createdAt,
   source,
   onSubmit,
+  onDelete,
   backHref = "/admin/requests",
 }: ContactRequestFormProps) {
   const [statusMessage, setStatusMessage] = useState<string | null>(null);
@@ -166,6 +170,22 @@ export function ContactRequestForm({
           </Link>
         </div>
       </form>
+
+      {onDelete ? (
+        <AdminDeleteSection
+          title="Удаление заявки"
+          description="Заявка будет удалена из базы без возможности восстановления."
+          buttonLabel="Удалить заявку"
+          deletingLabel="Удаляем…"
+          disabled={isSubmitting}
+          onError={(message) => setStatusMessage(message)}
+          onConfirm={() => confirmDeleteRequest(defaultValues.name)}
+          onDelete={async () => {
+            setStatusMessage(null);
+            await onDelete();
+          }}
+        />
+      ) : null}
     </div>
   );
 }

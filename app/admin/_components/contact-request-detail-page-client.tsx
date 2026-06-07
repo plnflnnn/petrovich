@@ -5,7 +5,7 @@ import {
   useContactRequests,
 } from "@/app/admin/_components/contact-requests-provider";
 import { ContactRequestForm } from "@/app/admin/_components/contact-request-form";
-import { notFound } from "next/navigation";
+import { notFound, useRouter } from "next/navigation";
 
 type ContactRequestDetailPageClientProps = {
   requestId: string;
@@ -14,7 +14,8 @@ type ContactRequestDetailPageClientProps = {
 export function ContactRequestDetailPageClient({
   requestId,
 }: ContactRequestDetailPageClientProps) {
-  const { getRequest, updateRequest, isLoading } = useContactRequests();
+  const router = useRouter();
+  const { getRequest, updateRequest, deleteRequest, isLoading } = useContactRequests();
   const request = getRequest(requestId);
 
   if (isLoading) {
@@ -32,6 +33,11 @@ export function ContactRequestDetailPageClient({
       source={request.source}
       onSubmit={async (values) => {
         await updateRequest(request.id, values);
+      }}
+      onDelete={async () => {
+        await deleteRequest(request.id);
+        router.push("/admin/requests");
+        router.refresh();
       }}
     />
   );

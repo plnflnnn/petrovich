@@ -58,3 +58,9 @@ export async function updateRequest(id: string, input: ContactRequestEditableInp
   const row = result.rows[0];
   return row ? toContactRequestRecord(row as RequestRow) : null;
 }
+
+export async function deleteRequest(id: string) {
+  const result = await query(`DELETE FROM requests WHERE id = $1 RETURNING id`, [id]);
+
+  return result.rowCount === 1;
+}
