@@ -1,4 +1,4 @@
-import { Pool, type QueryResultRow } from "pg";
+import { Pool, type ConnectionConfig, type QueryResultRow } from "pg";
 
 const globalForDb = globalThis as typeof globalThis & {
   pgPool?: Pool;
@@ -14,26 +14,53 @@ export function getDatabaseUrl() {
   return url;
 }
 
-function getDatabaseSchema() {
+function getDatabaseSchema(connectionString: string) {
   const schema = process.env.DATABASE_SCHEMA?.trim();
 
-  if (!schema) {
-    return null;
+  if (schema) {
+    if (!/^[a-z_][a-z0-9_]*$/i.test(schema)) {
+      throw new Error("DATABASE_SCHEMA has invalid format");
+    }
+
+    return schema;
   }
 
-  if (!/^[a-z_][a-z0-9_]*$/i.test(schema)) {
-    throw new Error("DATABASE_SCHEMA has invalid format");
+  // Tables from 001_initial_schema.render.sql live in this schema.
+  if (/render\.com/i.test(connectionString)) {
+    return "petrovichdb";
   }
 
-  return schema;
+  return null;
+}
+
+function getPoolSslConfig(connectionString: string): ConnectionConfig["ssl"] {
+  const override = process.env.DATABASE_SSL?.trim().toLowerCase();
+
+  if (override === "false" || override === "0") {
+    return undefined;
+  }
+
+  if (
+    override === "true" ||
+    override === "1" ||
+    /render\.com/i.test(connectionString) ||
+    /sslmode=require/i.test(connectionString)
+  ) {
+    return { rejectUnauthorized: false };
+  }
+
+  return undefined;
 }
 
 export function getPool() {
   if (!globalForDb.pgPool) {
-    const schema = getDatabaseSchema();
+    const connectionString = getDatabaseUrl();
+    const schema = getDatabaseSchema(connectionString);
+    const ssl = getPoolSslConfig(connectionString);
 
     globalForDb.pgPool = new Pool({
-      connectionString: getDatabaseUrl(),
+      connectionString,
+      ...(ssl ? { ssl } : {}),
       ...(schema ? { options: `-c search_path=${schema}` } : {}),
     });
   }
