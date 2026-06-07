@@ -1,5 +1,7 @@
 import { AdminLoginForm } from "@/app/admin/_components/admin-login-form";
+import { ADMIN_SESSION_COOKIE } from "@/lib/auth/constants";
 import { getAdminSession } from "@/lib/auth/session";
+import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { Suspense } from "react";
 
@@ -10,6 +12,12 @@ export default async function AdminLoginPage() {
 
   if (session) {
     redirect("/admin");
+  }
+
+  // Drop stale cookies that fail JWT verification so the next login starts clean.
+  const cookieStore = await cookies();
+  if (cookieStore.get(ADMIN_SESSION_COOKIE)?.value) {
+    cookieStore.delete(ADMIN_SESSION_COOKIE);
   }
 
   return (

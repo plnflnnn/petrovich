@@ -37,12 +37,9 @@ export function proxy(request: NextRequest) {
     return NextResponse.redirect(loginUrl);
   }
 
-  if (hasSession && pathname === ADMIN_LOGIN_PATH) {
-    const adminUrl = request.nextUrl.clone();
-    adminUrl.pathname = "/admin";
-    adminUrl.search = "";
-    return NextResponse.redirect(adminUrl);
-  }
+  // Do not redirect away from /admin/login here when a cookie exists.
+  // The cookie may be invalid; login page verifies the JWT and redirects only
+  // when the session is actually valid.
 
   return NextResponse.next();
 }

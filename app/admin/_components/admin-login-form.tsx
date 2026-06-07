@@ -30,12 +30,23 @@ export function AdminLoginForm() {
   async function onSubmit(values: AdminLoginValues) {
     setFormError(null);
 
+    const returnTo = searchParams.get("returnTo");
+
     const response = await fetch("/api/admin/login", {
       method: "POST",
       credentials: "same-origin",
+      redirect: "manual",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(values),
+      body: JSON.stringify({
+        ...values,
+        returnTo,
+      }),
     });
+
+    if (response.status === 303 || response.status === 302 || response.status === 307) {
+      window.location.assign(response.headers.get("Location") ?? "/admin");
+      return;
+    }
 
     const data = (await response.json()) as { ok?: boolean; error?: string };
 
@@ -43,14 +54,6 @@ export function AdminLoginForm() {
       setFormError(data.error ?? "Не удалось войти");
       return;
     }
-
-    const returnTo = searchParams.get("returnTo");
-    const destination =
-      returnTo && returnTo.startsWith("/admin") && !returnTo.startsWith("/admin/login")
-        ? returnTo
-        : "/admin";
-
-    window.location.assign(destination);
   }
 
   return (

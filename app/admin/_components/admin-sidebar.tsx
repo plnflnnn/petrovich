@@ -30,6 +30,7 @@ export function AdminSidebar({ username }: AdminSidebarProps) {
             <Link
               key={item.href}
               href={item.href}
+              prefetch={false}
               className={cn(
                 "block rounded-card-xs px-3 py-3 transition-colors",
                 isActive

@@ -7,6 +7,25 @@ import { adminLoginSchema } from "@/lib/validation/admin-login-schema";
 import { compare } from "bcryptjs";
 import { NextResponse } from "next/server";
 
+function getLoginDestination(request: Request, body: unknown) {
+  const returnTo =
+    typeof body === "object" &&
+    body !== null &&
+    typeof (body as Record<string, unknown>).returnTo === "string"
+      ? ((body as Record<string, unknown>).returnTo as string)
+      : null;
+
+  if (
+    returnTo &&
+    returnTo.startsWith("/admin") &&
+    !returnTo.startsWith("/admin/login")
+  ) {
+    return returnTo;
+  }
+
+  return "/admin";
+}
+
 export async function POST(request: Request) {
   let body: unknown;
 
@@ -50,7 +69,8 @@ export async function POST(request: Request) {
     await touchAdminLastLogin(admin.id);
 
     const token = await signAdminSessionToken(username);
-    const response = NextResponse.json({ ok: true });
+    const destination = getLoginDestination(request, body);
+    const response = NextResponse.redirect(new URL(destination, request.url), 303);
     setAdminSessionCookie(response, token);
     return response;
   } catch (error) {
