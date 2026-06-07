@@ -22,12 +22,16 @@ export const deliveryHeroImage: SiteImage = {
 
 export const homeHeroSlides: SiteImage[] = [
   {
+    src: imagePath("home/hero-green-cottage-picket.png"),
+    alt: "Зелёный деревянный коттедж с белым штакетником и цветущими розами на закате",
+  },
+  {
     src: imagePath("home/hero-blue-wooden-house.png"),
     alt: "Голубой деревянный дом с белым забором и золотистым ретривером на закате",
   },
   {
-    src: imagePath("home/hero-green-cottage-picket.png"),
-    alt: "Зелёный деревянный коттедж с белым штакетником и цветущими розами на закате",
+    src: imagePath("home/hero-living-room-window.png"),
+    alt: "Современная гостиная с большим пластиковым окном в тёплых лучах заката",
   },
   {
     src: imagePath("home/hero-carved-wood-forged-fence.png"),
@@ -36,10 +40,6 @@ export const homeHeroSlides: SiteImage[] = [
   {
     src: imagePath("roofing/hero-red-metal-tile-yard.png"),
     alt: "Крыша из красной металлочерепицы с видом на благоустроенный двор",
-  },
-  {
-    src: imagePath("home/hero-living-room-window.png"),
-    alt: "Современная гостиная с большим пластиковым окном в тёплых лучах заката",
   },
   {
     src: imagePath("home/hero-dark-fence-sunset.png"),

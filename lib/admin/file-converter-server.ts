@@ -7,6 +7,7 @@ import {
 import {
   type ConverterFormat,
 } from "@/lib/admin/file-converter";
+import { createPdfParser } from "@/lib/admin/pdf-parse-server";
 import {
   Document,
   Packer,
@@ -22,7 +23,6 @@ import mammoth from "mammoth";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { PDFDocument, type PDFPage, type PDFFont } from "pdf-lib";
-import { PDFParse } from "pdf-parse";
 import * as XLSX from "xlsx";
 
 const SPREADSHEET_FORMATS = new Set<ConverterFormat>(["csv", "xlsx", "xls"]);
@@ -270,7 +270,7 @@ async function readDocxRows(buffer: ArrayBuffer): Promise<string[][]> {
 }
 
 async function readPdfRows(buffer: ArrayBuffer): Promise<string[][]> {
-  const parser = new PDFParse({ data: buffer });
+  const parser = createPdfParser(buffer);
   const candidates: string[][][] = [];
 
   try {
