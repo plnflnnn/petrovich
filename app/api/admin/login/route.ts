@@ -70,7 +70,7 @@ export async function POST(request: Request) {
 
     const token = await signAdminSessionToken(username);
     const destination = getLoginDestination(request, body);
-    const response = NextResponse.redirect(new URL(destination, request.url), 303);
+    const response = NextResponse.json({ ok: true, returnTo: destination });
     setAdminSessionCookie(response, token);
     return response;
   } catch (error) {

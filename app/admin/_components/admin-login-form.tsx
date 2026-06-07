@@ -11,6 +11,29 @@ import { useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 
+type LoginResponse = {
+  ok?: boolean;
+  error?: string;
+  returnTo?: string;
+};
+
+function resolveLoginDestination(
+  returnTo: string | null,
+  responseReturnTo?: string,
+) {
+  const candidate = responseReturnTo ?? returnTo;
+
+  if (
+    candidate &&
+    candidate.startsWith("/admin") &&
+    !candidate.startsWith("/admin/login")
+  ) {
+    return candidate;
+  }
+
+  return "/admin";
+}
+
 export function AdminLoginForm() {
   const searchParams = useSearchParams();
   const [formError, setFormError] = useState<string | null>(null);
@@ -32,27 +55,39 @@ export function AdminLoginForm() {
 
     const returnTo = searchParams.get("returnTo");
 
-    const response = await fetch("/api/admin/login", {
-      method: "POST",
-      credentials: "same-origin",
-      redirect: "manual",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        ...values,
-        returnTo,
-      }),
-    });
+    try {
+      const response = await fetch("/api/admin/login", {
+        method: "POST",
+        credentials: "same-origin",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          ...values,
+          returnTo,
+        }),
+      });
 
-    if (response.status === 303 || response.status === 302 || response.status === 307) {
-      window.location.assign(response.headers.get("Location") ?? "/admin");
-      return;
-    }
+      const raw = await response.text();
+      let data: LoginResponse = {};
 
-    const data = (await response.json()) as { ok?: boolean; error?: string };
+      if (raw) {
+        try {
+          data = JSON.parse(raw) as LoginResponse;
+        } catch {
+          setFormError("Не удалось войти");
+          return;
+        }
+      }
 
-    if (!response.ok || !data.ok) {
-      setFormError(data.error ?? "Не удалось войти");
-      return;
+      if (!response.ok || !data.ok) {
+        setFormError(data.error ?? "Не удалось войти");
+        return;
+      }
+
+      window.location.assign(
+        resolveLoginDestination(returnTo, data.returnTo),
+      );
+    } catch {
+      setFormError("Не удалось войти");
     }
   }
 
