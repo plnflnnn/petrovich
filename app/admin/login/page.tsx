@@ -1,6 +1,9 @@
 import { AdminLoginForm } from "@/app/admin/_components/admin-login-form";
 import { getAdminSession } from "@/lib/auth/session";
 import { redirect } from "next/navigation";
+import { Suspense } from "react";
+
+export const dynamic = "force-dynamic";
 
 export default async function AdminLoginPage() {
   const session = await getAdminSession();
@@ -19,7 +22,9 @@ export default async function AdminLoginPage() {
           Введите логин и пароль администратора
         </p>
         <div className="mt-8">
-          <AdminLoginForm />
+          <Suspense fallback={<p className="text-sm text-text-muted">Загрузка…</p>}>
+            <AdminLoginForm />
+          </Suspense>
         </div>
       </div>
     </main>

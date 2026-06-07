@@ -25,8 +25,9 @@ const playfair = Playfair_Display({
 export const metadata: Metadata = {
   title: "У Петровича",
   icons: {
-    icon: "/favicon.png",
-    apple: "/favicon.png",
+    icon: "/logo-mark.png",
+    apple: "/logo-mark.png",
+    shortcut: "/logo-mark.png",
   },
   openGraph: {
     type: "website",

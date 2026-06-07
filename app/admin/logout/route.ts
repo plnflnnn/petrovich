@@ -1,7 +1,8 @@
-import { clearAdminSession } from "@/lib/auth/session";
+import { clearAdminSessionCookie } from "@/lib/auth/session";
 import { NextResponse } from "next/server";
 
 export async function GET(request: Request) {
-  await clearAdminSession();
-  return NextResponse.redirect(new URL("/admin/login", request.url));
+  const response = NextResponse.redirect(new URL("/admin/login", request.url));
+  clearAdminSessionCookie(response);
+  return response;
 }

@@ -38,7 +38,9 @@ export function ClientsProvider({ children }: { children: ReactNode }) {
     setError(null);
 
     try {
-      const response = await fetch("/api/admin/clients");
+      const response = await fetch("/api/admin/clients", {
+        credentials: "same-origin",
+      });
       const data = await readJson<{ ok?: boolean; clients?: ClientRecord[]; error?: string }>(
         response,
       );
@@ -71,6 +73,7 @@ export function ClientsProvider({ children }: { children: ReactNode }) {
   const addClient = useCallback(async (values: ClientFormInput) => {
     const response = await fetch("/api/admin/clients", {
       method: "POST",
+      credentials: "same-origin",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(values),
     });
@@ -90,6 +93,7 @@ export function ClientsProvider({ children }: { children: ReactNode }) {
   const updateClient = useCallback(async (id: string, values: ClientFormInput) => {
     const response = await fetch(`/api/admin/clients/${id}`, {
       method: "PATCH",
+      credentials: "same-origin",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(values),
     });

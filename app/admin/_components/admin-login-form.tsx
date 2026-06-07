@@ -7,12 +7,12 @@ import {
 } from "@/lib/validation/admin-login-schema";
 import { formInputShadowClass, formLabelClass } from "@/lib/utils/styles";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useRouter } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 
 export function AdminLoginForm() {
-  const router = useRouter();
+  const searchParams = useSearchParams();
   const [formError, setFormError] = useState<string | null>(null);
 
   const {
@@ -32,6 +32,7 @@ export function AdminLoginForm() {
 
     const response = await fetch("/api/admin/login", {
       method: "POST",
+      credentials: "same-origin",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(values),
     });
@@ -43,8 +44,13 @@ export function AdminLoginForm() {
       return;
     }
 
-    router.push("/admin");
-    router.refresh();
+    const returnTo = searchParams.get("returnTo");
+    const destination =
+      returnTo && returnTo.startsWith("/admin") && !returnTo.startsWith("/admin/login")
+        ? returnTo
+        : "/admin";
+
+    window.location.assign(destination);
   }
 
   return (

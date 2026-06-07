@@ -1,4 +1,7 @@
-import { createAdminSession } from "@/lib/auth/session";
+import {
+  setAdminSessionCookie,
+  signAdminSessionToken,
+} from "@/lib/auth/session";
 import { findActiveAdminByUsername, touchAdminLastLogin } from "@/lib/db/admins";
 import { adminLoginSchema } from "@/lib/validation/admin-login-schema";
 import { compare } from "bcryptjs";
@@ -45,9 +48,11 @@ export async function POST(request: Request) {
     }
 
     await touchAdminLastLogin(admin.id);
-    await createAdminSession(username);
 
-    return NextResponse.json({ ok: true });
+    const token = await signAdminSessionToken(username);
+    const response = NextResponse.json({ ok: true });
+    setAdminSessionCookie(response, token);
+    return response;
   } catch (error) {
     console.error("[admin/login] failed:", error);
     return NextResponse.json(

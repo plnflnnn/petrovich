@@ -43,7 +43,9 @@ export function ContactRequestsProvider({ children }: { children: ReactNode }) {
     setError(null);
 
     try {
-      const response = await fetch("/api/admin/requests");
+      const response = await fetch("/api/admin/requests", {
+        credentials: "same-origin",
+      });
       const data = await readJson<{
         ok?: boolean;
         requests?: ContactRequestRecord[];
@@ -79,6 +81,7 @@ export function ContactRequestsProvider({ children }: { children: ReactNode }) {
     async (id: string, values: ContactRequestEditableInput) => {
       const response = await fetch(`/api/admin/requests/${id}`, {
         method: "PATCH",
+        credentials: "same-origin",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(values),
       });
