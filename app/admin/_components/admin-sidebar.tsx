@@ -4,6 +4,7 @@ import { adminNavItems } from "@/lib/admin/navigation";
 import { cn } from "@/lib/utils/cn";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useState } from "react";
 
 type AdminSidebarProps = {
   username: string;
@@ -11,6 +12,20 @@ type AdminSidebarProps = {
 
 export function AdminSidebar({ username }: AdminSidebarProps) {
   const pathname = usePathname();
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
+
+  async function handleLogout() {
+    setIsLoggingOut(true);
+
+    try {
+      await fetch("/api/admin/logout", {
+        method: "POST",
+        credentials: "same-origin",
+      });
+    } finally {
+      window.location.assign("/admin/login");
+    }
+  }
 
   return (
     <aside className="flex h-full w-full flex-col border-r border-black/6 bg-white">
@@ -48,12 +63,14 @@ export function AdminSidebar({ username }: AdminSidebarProps) {
       </nav>
 
       <div className="border-t border-black/6 px-3 py-4">
-        <Link
-          href="/admin/logout"
-          className="inline-flex h-10 w-full items-center justify-center rounded-full bg-bg-soft px-4 text-sm font-medium text-text ring-1 ring-black/6 transition-colors hover:bg-bg-muted"
+        <button
+          type="button"
+          onClick={() => void handleLogout()}
+          disabled={isLoggingOut}
+          className="inline-flex h-10 w-full items-center justify-center rounded-full bg-bg-soft px-4 text-sm font-medium text-text ring-1 ring-black/6 transition-colors hover:bg-bg-muted disabled:opacity-60"
         >
-          Выйти
-        </Link>
+          {isLoggingOut ? "Выходим…" : "Выйти"}
+        </button>
       </div>
     </aside>
   );

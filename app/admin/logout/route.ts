@@ -1,8 +1,7 @@
-import { clearAdminSessionCookie } from "@/lib/auth/session";
 import { NextResponse } from "next/server";
 
+// Legacy GET /admin/logout — old clients prefetched this link and cleared the session.
+// Never clear cookies here; real logout is POST /api/admin/logout.
 export async function GET(request: Request) {
-  const response = NextResponse.redirect(new URL("/admin/login", request.url));
-  clearAdminSessionCookie(response);
-  return response;
+  return NextResponse.redirect(new URL("/admin", request.url));
 }
