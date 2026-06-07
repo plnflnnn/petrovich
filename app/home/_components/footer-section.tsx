@@ -59,7 +59,7 @@ export function FooterSection() {
           />
 
           <div className="flex flex-col gap-3 text-xs text-white/50 sm:flex-row sm:items-center sm:justify-between">
-            <p>© {year} {siteHeaderContent.siteName}</p>
+            <p>© {year} {siteHeaderContent.legalName}</p>
             <div className="flex gap-6">
               <button
                 type="button"

@@ -123,7 +123,15 @@
   }
 
   .section-title-em {
-    @apply font-display italic font-normal text-text/55;
+    @apply font-display italic font-medium;
+    background: linear-gradient(
+      120deg,
+      var(--color-accent) 0%,
+      color-mix(in srgb, var(--color-accent) 72%, #006b42) 100%
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
   }
 
   .badge-kicker {

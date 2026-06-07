@@ -2,6 +2,7 @@
 
 import type { ClientFormValues, ClientRecord } from "@/lib/admin/types";
 import type { ClientFormInput } from "@/lib/validation/client-form-schema";
+import { adminFetch, readAdminJson } from "@/lib/admin/admin-fetch";
 import {
   createContext,
   useCallback,
@@ -25,10 +26,6 @@ type ClientsContextValue = {
 
 const ClientsContext = createContext<ClientsContextValue | null>(null);
 
-async function readJson<T>(response: Response): Promise<T> {
-  return response.json() as Promise<T>;
-}
-
 export function ClientsProvider({ children }: { children: ReactNode }) {
   const [clients, setClients] = useState<ClientRecord[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -39,10 +36,8 @@ export function ClientsProvider({ children }: { children: ReactNode }) {
     setError(null);
 
     try {
-      const response = await fetch("/api/admin/clients", {
-        credentials: "same-origin",
-      });
-      const data = await readJson<{ ok?: boolean; clients?: ClientRecord[]; error?: string }>(
+      const response = await adminFetch("/api/admin/clients");
+      const data = await readAdminJson<{ ok?: boolean; clients?: ClientRecord[]; error?: string }>(
         response,
       );
 
@@ -72,14 +67,13 @@ export function ClientsProvider({ children }: { children: ReactNode }) {
   );
 
   const addClient = useCallback(async (values: ClientFormInput) => {
-    const response = await fetch("/api/admin/clients", {
+    const response = await adminFetch("/api/admin/clients", {
       method: "POST",
-      credentials: "same-origin",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(values),
     });
 
-    const data = await readJson<{ ok?: boolean; client?: ClientRecord; error?: string }>(
+    const data = await readAdminJson<{ ok?: boolean; client?: ClientRecord; error?: string }>(
       response,
     );
 
@@ -92,14 +86,13 @@ export function ClientsProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const updateClient = useCallback(async (id: string, values: ClientFormInput) => {
-    const response = await fetch(`/api/admin/clients/${id}`, {
+    const response = await adminFetch(`/api/admin/clients/${id}`, {
       method: "PATCH",
-      credentials: "same-origin",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(values),
     });
 
-    const data = await readJson<{ ok?: boolean; client?: ClientRecord; error?: string }>(
+    const data = await readAdminJson<{ ok?: boolean; client?: ClientRecord; error?: string }>(
       response,
     );
 
@@ -115,12 +108,11 @@ export function ClientsProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const deleteClient = useCallback(async (id: string) => {
-    const response = await fetch(`/api/admin/clients/${id}`, {
+    const response = await adminFetch(`/api/admin/clients/${id}`, {
       method: "DELETE",
-      credentials: "same-origin",
     });
 
-    const data = await readJson<{ ok?: boolean; error?: string }>(response);
+    const data = await readAdminJson<{ ok?: boolean; error?: string }>(response);
 
     if (!response.ok || !data.ok) {
       throw new Error(data.error ?? "Не удалось удалить клиента");

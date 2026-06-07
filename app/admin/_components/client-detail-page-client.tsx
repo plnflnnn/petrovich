@@ -5,6 +5,7 @@ import {
   useClients,
 } from "@/app/admin/_components/clients-provider";
 import { ClientForm } from "@/app/admin/_components/client-form";
+import { useAdminDeleteRedirect } from "@/lib/admin/use-admin-delete-redirect";
 import { notFound, useRouter } from "next/navigation";
 
 type ClientDetailPageClientProps = {
@@ -13,6 +14,7 @@ type ClientDetailPageClientProps = {
 
 export function ClientDetailPageClient({ clientId }: ClientDetailPageClientProps) {
   const router = useRouter();
+  const { isRedirecting, deleteAndRedirect } = useAdminDeleteRedirect("/admin/clients");
   const { getClient, addClient, updateClient, deleteClient, isLoading } = useClients();
   const isCreateMode = clientId === "new";
 
@@ -36,6 +38,10 @@ export function ClientDetailPageClient({ clientId }: ClientDetailPageClientProps
     );
   }
 
+  if (isRedirecting) {
+    return null;
+  }
+
   if (isLoading) {
     return (
       <p className="text-sm text-text-muted">Загружаем карточку клиента…</p>
@@ -57,11 +63,7 @@ export function ClientDetailPageClient({ clientId }: ClientDetailPageClientProps
       onSubmit={async (values) => {
         await updateClient(client.id, values);
       }}
-      onDelete={async () => {
-        await deleteClient(client.id);
-        router.push("/admin/clients");
-        router.refresh();
-      }}
+      onDelete={() => deleteAndRedirect(() => deleteClient(client.id))}
     />
   );
 }

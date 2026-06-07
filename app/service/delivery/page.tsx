@@ -1,5 +1,5 @@
 import { ServicePage } from "@/app/service/service-page";
-import type { Metadata } from "next";
+import { serviceMetadata } from "@/app/service/_lib/service-metadata";
 
 export const service = {
   slug: "delivery",
@@ -25,16 +25,13 @@ export const service = {
   ],
   meta: {
     title:
-      "Грузоперевозки и доставка грузов — Новосибирск, Каргат | ИП Филина",
+      "Грузоперевозки и доставка грузов — Новосибирск, Каргат | ИП Филина Л.В.",
     description:
       "Доставка строительных материалов и перевозка грузов по договорённости. Более 13 лет опыта. Каргатский район и другие районы НСО.",
   },
 };
 
-export const metadata: Metadata = {
-  title: { absolute: service.meta.title },
-  description: service.meta.description,
-};
+export const metadata = serviceMetadata(service);
 
 export default function DeliveryServicePage() {
   return <ServicePage service={service} />;

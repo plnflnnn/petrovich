@@ -4,6 +4,7 @@ import type {
   ContactRequestEditableInput,
   ContactRequestRecord,
 } from "@/lib/admin/types";
+import { adminFetch, readAdminJson } from "@/lib/admin/admin-fetch";
 import {
   createContext,
   useCallback,
@@ -30,10 +31,6 @@ type ContactRequestsContextValue = {
 const ContactRequestsContext =
   createContext<ContactRequestsContextValue | null>(null);
 
-async function readJson<T>(response: Response): Promise<T> {
-  return response.json() as Promise<T>;
-}
-
 export function ContactRequestsProvider({ children }: { children: ReactNode }) {
   const [requests, setRequests] = useState<ContactRequestRecord[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -44,10 +41,8 @@ export function ContactRequestsProvider({ children }: { children: ReactNode }) {
     setError(null);
 
     try {
-      const response = await fetch("/api/admin/requests", {
-        credentials: "same-origin",
-      });
-      const data = await readJson<{
+      const response = await adminFetch("/api/admin/requests");
+      const data = await readAdminJson<{
         ok?: boolean;
         requests?: ContactRequestRecord[];
         error?: string;
@@ -80,14 +75,13 @@ export function ContactRequestsProvider({ children }: { children: ReactNode }) {
 
   const updateRequest = useCallback(
     async (id: string, values: ContactRequestEditableInput) => {
-      const response = await fetch(`/api/admin/requests/${id}`, {
+      const response = await adminFetch(`/api/admin/requests/${id}`, {
         method: "PATCH",
-        credentials: "same-origin",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(values),
       });
 
-      const data = await readJson<{
+      const data = await readAdminJson<{
         ok?: boolean;
         request?: ContactRequestRecord;
         error?: string;
@@ -107,12 +101,11 @@ export function ContactRequestsProvider({ children }: { children: ReactNode }) {
   );
 
   const deleteRequest = useCallback(async (id: string) => {
-    const response = await fetch(`/api/admin/requests/${id}`, {
+    const response = await adminFetch(`/api/admin/requests/${id}`, {
       method: "DELETE",
-      credentials: "same-origin",
     });
 
-    const data = await readJson<{ ok?: boolean; error?: string }>(response);
+    const data = await readAdminJson<{ ok?: boolean; error?: string }>(response);
 
     if (!response.ok || !data.ok) {
       throw new Error(data.error ?? "Не удалось удалить заявку");

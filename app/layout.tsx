@@ -1,4 +1,5 @@
 import { ClientShell } from "@/app/providers/client-shell";
+import { siteKeywords } from "@/lib/seo/site-keywords";
 import type { Metadata } from "next";
 import { Geist_Mono, Inter, Playfair_Display } from "next/font/google";
 import "./globals.css";
@@ -24,11 +25,7 @@ const playfair = Playfair_Display({
 
 export const metadata: Metadata = {
   title: "У Петровича",
-  icons: {
-    icon: "/logo-mark.png",
-    apple: "/logo-mark.png",
-    shortcut: "/logo-mark.png",
-  },
+  keywords: siteKeywords,
   openGraph: {
     type: "website",
     locale: "ru_RU",

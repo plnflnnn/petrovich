@@ -1,5 +1,5 @@
 import { ServicePage } from "@/app/service/service-page";
-import type { Metadata } from "next";
+import { serviceMetadata } from "@/app/service/_lib/service-metadata";
 
 export const service = {
   slug: "forging",
@@ -25,16 +25,13 @@ export const service = {
   ],
   closingParagraphs: [],
   meta: {
-    title: "Кованые изделия ручной работы под заказ | ИП Филина",
+    title: "Кованые изделия ручной работы под заказ | ИП Филина Л.В.",
     description:
       "Кованые заборы, ворота, ограждения и декор. Ручная ковка по индивидуальным размерам в Каргатском районе.",
   },
 };
 
-export const metadata: Metadata = {
-  title: { absolute: service.meta.title },
-  description: service.meta.description,
-};
+export const metadata = serviceMetadata(service);
 
 export default function ForgingServicePage() {
   return <ServicePage service={service} />;

@@ -3,7 +3,7 @@
 import { AdminDeleteSection } from "@/app/admin/_components/admin-delete-section";
 import { AdminPageHeader } from "@/app/admin/_components/admin-page-header";
 import { PillButton } from "@/app/components/ui/pill-button";
-import { confirmDeleteClient } from "@/lib/admin/confirm-delete";
+import { confirmDelete } from "@/lib/admin/confirm-delete";
 import { formatAdminDate } from "@/lib/admin/list-utils";
 import type { ClientRecord } from "@/lib/admin/types";
 import {
@@ -197,7 +197,7 @@ export function ClientForm({
           deletingLabel="Удаляем…"
           disabled={isSubmitting}
           onError={(message) => setStatusMessage(message)}
-          onConfirm={() => confirmDeleteClient(client.name)}
+          onConfirm={() => confirmDelete("client", client.name)}
           onDelete={async () => {
             setStatusMessage(null);
             await onDelete();

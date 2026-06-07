@@ -5,7 +5,8 @@ import {
   useContactRequests,
 } from "@/app/admin/_components/contact-requests-provider";
 import { ContactRequestForm } from "@/app/admin/_components/contact-request-form";
-import { notFound, useRouter } from "next/navigation";
+import { useAdminDeleteRedirect } from "@/lib/admin/use-admin-delete-redirect";
+import { notFound } from "next/navigation";
 
 type ContactRequestDetailPageClientProps = {
   requestId: string;
@@ -14,9 +15,13 @@ type ContactRequestDetailPageClientProps = {
 export function ContactRequestDetailPageClient({
   requestId,
 }: ContactRequestDetailPageClientProps) {
-  const router = useRouter();
+  const { isRedirecting, deleteAndRedirect } = useAdminDeleteRedirect("/admin/requests");
   const { getRequest, updateRequest, deleteRequest, isLoading } = useContactRequests();
   const request = getRequest(requestId);
+
+  if (isRedirecting) {
+    return null;
+  }
 
   if (isLoading) {
     return <p className="text-sm text-text-muted">Загружаем карточку заявки…</p>;
@@ -34,11 +39,9 @@ export function ContactRequestDetailPageClient({
       onSubmit={async (values) => {
         await updateRequest(request.id, values);
       }}
-      onDelete={async () => {
-        await deleteRequest(request.id);
-        router.push("/admin/requests");
-        router.refresh();
-      }}
+      onDelete={() =>
+        deleteAndRedirect(() => deleteRequest(request.id))
+      }
     />
   );
 }

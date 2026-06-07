@@ -5,7 +5,8 @@ const equipmentLine = businessLines.find((l) => l.id === "equipment")!;
 const transportLine = businessLines.find((l) => l.id === "transport")!;
 
 export const siteHeaderContent = {
-  siteName: "ИП Филина Л. В",
+  siteName: "У Петровича",
+  legalName: "ИП Филина Л.В.",
   nav: {
     items: [
       { label: "Главная", href: "/", kind: "page" as const },

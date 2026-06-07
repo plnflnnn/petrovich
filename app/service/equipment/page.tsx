@@ -1,5 +1,5 @@
 import { ServicePage } from "@/app/service/service-page";
-import type { Metadata } from "next";
+import { serviceMetadata } from "@/app/service/_lib/service-metadata";
 
 export const service = {
   slug: "equipment",
@@ -24,16 +24,13 @@ export const service = {
     "Каждый проект обсуждается индивидуально. Мы учитываем предполагаемые условия эксплуатации, необходимые функции и пожелания заказчика. Для получения подробной информации свяжитесь с нами по телефону или оставьте заявку на сайте.",
   ],
   meta: {
-    title: "Хозяйственная техника под заказ | ИП Филина",
+    title: "Хозяйственная техника под заказ | ИП Филина Л.В.",
     description:
       "Сборка и изготовление хозяйственной техники и тракторов под заказ. Индивидуальные решения для участка и хозяйства.",
   },
 };
 
-export const metadata: Metadata = {
-  title: { absolute: service.meta.title },
-  description: service.meta.description,
-};
+export const metadata = serviceMetadata(service);
 
 export default function EquipmentServicePage() {
   return <ServicePage service={service} />;

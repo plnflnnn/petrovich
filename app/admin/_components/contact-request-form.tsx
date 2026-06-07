@@ -4,7 +4,7 @@ import { AdminDeleteSection } from "@/app/admin/_components/admin-delete-section
 import { AdminPageHeader } from "@/app/admin/_components/admin-page-header";
 import { PillButton } from "@/app/components/ui/pill-button";
 import { formatAdminDate } from "@/lib/admin/list-utils";
-import { confirmDeleteRequest } from "@/lib/admin/confirm-delete";
+import { confirmDelete } from "@/lib/admin/confirm-delete";
 import {
   contactRequestFormSchema,
   type ContactRequestEditableInput,
@@ -179,7 +179,7 @@ export function ContactRequestForm({
           deletingLabel="Удаляем…"
           disabled={isSubmitting}
           onError={(message) => setStatusMessage(message)}
-          onConfirm={() => confirmDeleteRequest(defaultValues.name)}
+          onConfirm={() => confirmDelete("request", defaultValues.name)}
           onDelete={async () => {
             setStatusMessage(null);
             await onDelete();

@@ -1,0 +1,201 @@
+/** Shared meta keywords for Yandex and legacy crawlers — Russian only. */
+const brandKeywords = [
+  "У Петровича",
+  "ИП Филина Л.В.",
+  "строительные материалы у Петровича",
+];
+
+const geoKeywords = [
+  "Новосибирск",
+  "Каргат",
+  "Каргатский район",
+  "Новосибирская область",
+  "доставка строительных материалов из Новосибирска",
+  "доставка стройматериалов в Каргат",
+  "доставка в Каргатский район",
+  "стройматериалы Каргат",
+];
+
+const generalKeywords = [
+  "строительные материалы",
+  "отделочные материалы",
+  "стройматериалы",
+  "стройматериалы с доставкой",
+  "материалы для строительства дома",
+  "материалы для ремонта",
+  "материалы для дачи",
+  "благоустройство участка",
+  "подбор строительных материалов",
+];
+
+const roofingKeywords = [
+  "кровля",
+  "кровельные материалы",
+  "профнастил",
+  "металл для кровли",
+  "металлочерепица",
+  "водосток",
+  "водосточная система",
+  "водосточные желоба",
+  "водосточные трубы",
+  "доборные элементы кровли",
+];
+
+const fenceKeywords = [
+  "заборы",
+  "ограждения",
+  "металлический штакетник",
+  "штакетник",
+  "профнастил для ограждений",
+  "забор из профнастила",
+  "металлический забор",
+  "чёрный металл",
+  "ворота",
+  "калитки",
+  "ворота и калитки",
+];
+
+const windowKeywords = [
+  "окна",
+  "пластиковые окна",
+  "окна под заказ",
+  "окна нестандартного размера",
+  "комплектующие для окон",
+  "фурнитура для окон",
+];
+
+const doorKeywords = [
+  "двери",
+  "входные двери",
+  "межкомнатные двери",
+  "двери под заказ",
+  "фурнитура для дверей",
+  "комплектующие для дверей",
+];
+
+const facadeKeywords = [
+  "сайдинг",
+  "фасадная отделка",
+  "фасадные панели",
+  "внешняя отделка фасада",
+  "доборные элементы фасада",
+];
+
+const insulationKeywords = [
+  "утеплитель",
+  "утеплители",
+  "минеральная вата",
+  "пенопласт",
+  "пеноплекс",
+  "теплоизоляция",
+  "утепление дома",
+  "изоляция и утепление",
+];
+
+const drywallKeywords = [
+  "гипсокартон",
+  "листы гипсокартона",
+  "профили для гипсокартона",
+  "комплектующие для гипсокартона",
+  "перегородки из гипсокартона",
+];
+
+const panelKeywords = [
+  "панели для стен",
+  "стеновые панели",
+  "панели для отделки",
+  "панели под заказ",
+  "плинтусы",
+  "доборные элементы для панелей",
+];
+
+const lumberKeywords = [
+  "пиломатериалы",
+  "доска",
+  "брус",
+  "дерево для пола",
+  "пиломатериалы под заказ",
+  "древесина",
+];
+
+const forgingKeywords = [
+  "кованые изделия",
+  "художественная ковка",
+  "кованые изделия ручной работы",
+  "кованый забор",
+  "кованые заборы",
+  "кованые ворота",
+  "кованые калитки",
+  "садовые арки",
+  "подставки для цветов",
+  "декоративные элементы ковки",
+];
+
+const equipmentKeywords = [
+  "хозяйственная техника",
+  "хозяйственная техника под заказ",
+  "тракторы",
+  "трактор под заказ",
+  "мини-трактор",
+  "техника для хозяйственных работ",
+  "оборудование для уборки снега",
+  "уборка снега трактором",
+  "техника для обработки земли",
+];
+
+const deliveryKeywords = [
+  "грузоперевозки",
+  "доставка строительных материалов",
+  "доставка грузов",
+  "перевозка мебели",
+  "перевозка оборудования",
+  "перевозка грузов по договорённости",
+];
+
+export const siteKeywords = [
+  ...brandKeywords,
+  ...geoKeywords,
+  ...generalKeywords,
+  ...roofingKeywords,
+  ...fenceKeywords,
+  ...windowKeywords,
+  ...doorKeywords,
+  ...facadeKeywords,
+  ...insulationKeywords,
+  ...drywallKeywords,
+  ...panelKeywords,
+  ...lumberKeywords,
+  ...forgingKeywords,
+  ...equipmentKeywords,
+  ...deliveryKeywords,
+];
+
+export const categoryKeywords: Record<string, string[]> = {
+  roofing: roofingKeywords,
+  fences: fenceKeywords,
+  windows: windowKeywords,
+  doors: doorKeywords,
+  facade: facadeKeywords,
+  insulation: insulationKeywords,
+  drywall: drywallKeywords,
+  "wall-panels": panelKeywords,
+  lumber: lumberKeywords,
+};
+
+export const servicePageKeywords: Record<string, string[]> = {
+  forging: forgingKeywords,
+  equipment: equipmentKeywords,
+  delivery: deliveryKeywords,
+};
+
+function uniqueKeywords(keywords: string[]): string[] {
+  return [...new Set(keywords)];
+}
+
+export function keywordsForCategory(slug: string): string[] {
+  return uniqueKeywords([...siteKeywords, ...(categoryKeywords[slug] ?? [])]);
+}
+
+export function keywordsForService(slug: string): string[] {
+  return uniqueKeywords([...siteKeywords, ...(servicePageKeywords[slug] ?? [])]);
+}
