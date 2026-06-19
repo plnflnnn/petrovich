@@ -40,8 +40,8 @@ export const metadata: Metadata = {
     siteName: siteHeaderContent.publicSiteName,
     images: [
       {
-        url: "/og-image.png",
-        width: 1024,
+        url: "/og.png",
+        width: 1536,
         height: 1024,
         alt: "Строительные и отделочные материалы",
       },
@@ -49,7 +49,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    images: ["/og-image.png"],
+    images: ["/og.png"],
   },
 };
 
