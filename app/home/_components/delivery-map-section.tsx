@@ -2,12 +2,11 @@ import { RequestModalButton } from "@/app/components/request-modal/request-modal
 import { SiteLogo } from "@/app/components/site-logo";
 import { WorkingHoursList } from "@/app/components/working-hours-list";
 import { Container } from "@/app/components/ui/container";
-import { buildYandexMapEmbedUrl, buildYandexMapFullUrl, buildYandexStaticMapUrl } from "@/lib/data/office-map";
+import { buildYandexMapEmbedUrl, buildYandexMapFullUrl } from "@/lib/data/office-map";
 import { YandexMapEmbed } from "@/app/home/_components/yandex-map-embed";
 import { siteHeaderContent } from "@/app/home/_components/site-header-content";
 
 const MAP_EMBED_URL = buildYandexMapEmbedUrl();
-const MAP_STATIC_URL = buildYandexStaticMapUrl();
 const MAP_FULL_URL = buildYandexMapFullUrl();
 const OPEN_MAP_LABEL = "Открыть в Яндекс Картах";
 const DELIVERY_ZONE_NOTE = "Доставка из Новосибирска по Каргатскому району";
@@ -31,7 +30,7 @@ export function DeliveryMapSection({
             <div className="inline-flex items-center gap-2.5">
               <SiteLogo size={28} className="shrink-0" />
               <span className="text-sm font-semibold tracking-tight text-text">
-                {siteHeaderContent.publicSiteName}
+                {siteHeaderContent.legalName}
               </span>
             </div>
 
@@ -76,10 +75,9 @@ export function DeliveryMapSection({
           </article>
 
           <div className="h-full overflow-hidden rounded-card-lg bg-white shadow-card-sm ring-1 ring-black/3">
-            <div className="relative aspect-use-case w-full bg-bg-soft">
+            <div className="relative aspect-map w-full bg-bg-soft">
               <YandexMapEmbed
                 embedUrl={MAP_EMBED_URL}
-                staticMapUrl={MAP_STATIC_URL}
                 title={siteHeaderContent.officeAddress}
               />
             </div>

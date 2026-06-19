@@ -1,18 +1,34 @@
 "use client";
 
+import { cn } from "@/lib/utils/cn";
 import { useEffect, useRef, useState } from "react";
 
 type YandexMapEmbedProps = {
   embedUrl: string;
-  staticMapUrl: string;
   title: string;
 };
 
-export function YandexMapEmbed({
-  embedUrl,
-  staticMapUrl,
+function MapPlaceholder({
   title,
-}: YandexMapEmbedProps) {
+  fadingOut,
+}: {
+  title: string;
+  fadingOut: boolean;
+}) {
+  return (
+    <div
+      className={cn(
+        "map-loading-shell absolute inset-0 flex h-full w-full items-center justify-center transition-opacity duration-500 ease-out",
+        fadingOut ? "pointer-events-none opacity-0" : "opacity-100",
+      )}
+    >
+      <p className="map-loading-label text-xs text-text-muted">Карта загружается…</p>
+      <span className="sr-only">{title}</span>
+    </div>
+  );
+}
+
+export function YandexMapEmbed({ embedUrl, title }: YandexMapEmbedProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [shouldLoadIframe, setShouldLoadIframe] = useState(false);
   const [iframeReady, setIframeReady] = useState(false);
@@ -37,19 +53,7 @@ export function YandexMapEmbed({
 
   return (
     <div ref={containerRef} className="absolute inset-0 h-full w-full overflow-hidden">
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
-        src={staticMapUrl}
-        alt=""
-        aria-hidden
-        decoding="async"
-        fetchPriority="high"
-        className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-300 ${
-          iframeReady ? "pointer-events-none opacity-0" : "opacity-100"
-        }`}
-      />
-
-      <span className="sr-only">{title}</span>
+      <MapPlaceholder title={title} fadingOut={iframeReady} />
 
       {shouldLoadIframe ? (
         <iframe
@@ -58,9 +62,10 @@ export function YandexMapEmbed({
           referrerPolicy="no-referrer-when-downgrade"
           allow="geolocation; fullscreen"
           onLoad={() => setIframeReady(true)}
-          className={`absolute inset-0 h-full w-full border-0 transition-opacity duration-300 ${
-            iframeReady ? "opacity-100" : "opacity-0"
-          }`}
+          className={cn(
+            "absolute inset-0 h-full w-full border-0 transition-opacity duration-500 ease-out",
+            iframeReady ? "opacity-100" : "opacity-0",
+          )}
         />
       ) : null}
     </div>

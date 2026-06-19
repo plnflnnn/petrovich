@@ -23,7 +23,7 @@ type HeroImageSliderProps = {
 };
 
 const controlButtonClass =
-  "relative z-50 cursor-pointer rounded-full border border-white/25 bg-white/15 px-3.5 py-2 text-sm font-semibold leading-tight text-white backdrop-blur-md transition-colors hover:bg-white/30 active:bg-white/40 sm:px-4 sm:py-2.5";
+  "relative cursor-pointer rounded-full border border-white/25 bg-white/15 px-3.5 py-2 text-sm font-semibold leading-tight text-white backdrop-blur-md transition-colors hover:bg-white/30 active:bg-white/40 sm:px-4 sm:py-2.5";
 
 type SliderControlsProps = {
   swiper: SwiperInstance | null;
@@ -154,7 +154,7 @@ export function HeroImageSlider({
             swiper={swiper}
             activeIndex={activeIndex}
             total={slides.length}
-            className="pointer-events-auto absolute right-5 bottom-5 z-50 hidden sm:right-6 sm:bottom-6 sm:flex"
+            className="pointer-events-auto absolute right-5 bottom-5 z-20 hidden sm:right-6 sm:bottom-6 sm:flex"
           />
           <SliderControls
             swiper={swiper}

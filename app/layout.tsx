@@ -66,7 +66,6 @@ export default function RootLayout({
     >
       <head>
         <link rel="preconnect" href="https://yandex.ru" />
-        <link rel="preconnect" href="https://static-maps.yandex.ru" />
         <link rel="dns-prefetch" href="https://yandex.ru" />
       </head>
       <body className="flex min-h-full flex-col font-sans" suppressHydrationWarning>

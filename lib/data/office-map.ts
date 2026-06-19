@@ -15,9 +15,3 @@ export function buildYandexMapEmbedUrl(zoom = 16): string {
 export function buildYandexMapFullUrl(): string {
   return `https://${yandexHost}/maps/org/${yandexOrgId}/`;
 }
-
-/** Lightweight static preview while the interactive widget loads. */
-export function buildYandexStaticMapUrl(width = 900, height = 600, zoom = 16): string {
-  const { lon, lat } = officeCoords;
-  return `https://static-maps.yandex.ru/1.x/?lang=ru_RU&ll=${lon},${lat}&size=${width},${height}&z=${zoom}&l=map&pt=${lon},${lat},pm2gnm`;
-}

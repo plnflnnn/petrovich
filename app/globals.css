@@ -103,7 +103,7 @@
   --shadow-modal: 0 30px 80px -20px rgb(0 0 0 / 0.45);
 
   --aspect-use-case: 16 / 10;
-  --aspect-map: 16 / 11;
+  --aspect-map: 15 / 13;
   --aspect-portrait: 4 / 5;
   --aspect-portrait-tall: 5 / 6;
   --aspect-thumb: 5 / 4;
@@ -266,5 +266,44 @@ body {
 @utility lg-grid-about {
   @variant lg {
     grid-template-columns: 1.15fr 1fr;
+  }
+}
+
+@keyframes map-loading-shimmer {
+  0% {
+    background-position: 100% 0;
+  }
+
+  100% {
+    background-position: -100% 0;
+  }
+}
+
+@keyframes map-loading-breathe {
+  0%,
+  100% {
+    opacity: 0.45;
+  }
+
+  50% {
+    opacity: 1;
+  }
+}
+
+@layer components {
+  .map-loading-shell {
+    background-color: var(--color-bg-soft);
+    background-image: linear-gradient(
+      105deg,
+      var(--color-bg-soft) 0%,
+      color-mix(in srgb, var(--color-bg-soft) 84%, white) 48%,
+      var(--color-bg-soft) 100%
+    );
+    background-size: 220% 100%;
+    animation: map-loading-shimmer 2.8s ease-in-out infinite;
+  }
+
+  .map-loading-label {
+    animation: map-loading-breathe 2.8s ease-in-out infinite;
   }
 }

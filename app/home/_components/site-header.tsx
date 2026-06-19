@@ -63,7 +63,7 @@ export function SiteHeader() {
   }, []);
 
   return (
-    <header className="fixed inset-x-0 top-0 z-50 bg-bg/85">
+    <header className="fixed inset-x-0 top-0 z-overlay bg-bg/85">
       <Container className="flex h-16 items-center justify-between gap-4 lg:h-18">
         <Link
           href="/"
