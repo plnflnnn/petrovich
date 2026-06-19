@@ -20,7 +20,7 @@ function formatErrorEmail(payload: ErrorReportPayload): string {
   const occurredAt = payload.occurredAt || new Date().toISOString();
 
   return [
-    "Ошибка на сайте «У Петровича»",
+    "Ошибка на сайте «ИП Филина Л.В.»",
     "",
     `Время: ${occurredAt}`,
     `Тип: ${KIND_LABELS[payload.kind]}`,

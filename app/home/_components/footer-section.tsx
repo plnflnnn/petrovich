@@ -1,6 +1,7 @@
 "use client";
 
 import { SiteLogo } from "@/app/components/site-logo";
+import { WorkingHoursList } from "@/app/components/working-hours-list";
 import { Container } from "@/app/components/ui/container";
 import { LegalModal } from "@/app/components/legal-modal/legal-modal";
 import { siteHeaderContent } from "@/app/home/_components/site-header-content";
@@ -33,7 +34,7 @@ export function FooterSection() {
                 {siteHeaderContent.siteName}
               </Link>
               <p className="mt-2 text-sm-tight leading-relaxed text-white/55">
-                Доставка материалов из Новосибирска в Каргатский район
+                {siteHeaderContent.publicSiteName}
               </p>
             </div>
 
@@ -95,7 +96,7 @@ function FooterContacts() {
   const { phoneTel, phoneDisplay, officeAddress } = siteHeaderContent;
 
   return (
-    <address className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4 not-italic mt-4">
+    <address className="mt-4 grid grid-cols-1 gap-3 not-italic sm:grid-cols-2 sm:gap-4 lg:grid-cols-3">
       <a
         href={`tel:${phoneTel}`}
         className="group flex h-full gap-3.5 rounded-card-sm bg-white/6 p-4 ring-1 ring-white/10 transition-colors hover:bg-white/10 hover:ring-white/15"
@@ -114,7 +115,7 @@ function FooterContacts() {
             {phoneDisplay}
           </span>
           <span className="mt-1.5 block text-xs-plus leading-relaxed text-white/50">
-            Позвоните — ответим и поможем с расчётом
+            Позвоните в рабочие часы — {siteHeaderContent.workingHoursSummary}
           </span>
         </span>
       </a>
@@ -134,8 +135,23 @@ function FooterContacts() {
             {officeAddress}
           </span>
           <span className="mt-1.5 block text-xs-plus leading-relaxed text-white/50">
-            Можно забрать заказ в офисе
+            Можно забрать заказ в офисе в рабочие часы
           </span>
+        </span>
+      </div>
+
+      <div className="flex h-full gap-3.5 rounded-card-sm bg-white/6 p-4 ring-1 ring-white/10">
+        <span
+          className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white/8 text-white/80 ring-1 ring-white/12"
+          aria-hidden
+        >
+          <ClockIcon />
+        </span>
+        <span className="min-w-0 pt-0.5">
+          <span className="block text-caption font-semibold uppercase tracking-kicker-sm text-accent">
+            Режим работы
+          </span>
+          <WorkingHoursList variant="on-dark" className="mt-2" />
         </span>
       </div>
     </address>
@@ -165,6 +181,21 @@ function MapPinIcon() {
         strokeLinejoin="round"
       />
       <circle cx="12" cy="10" r="2.25" stroke="currentColor" strokeWidth="1.75" />
+    </svg>
+  );
+}
+
+function ClockIcon() {
+  return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden>
+      <circle cx="12" cy="12" r="8.25" stroke="currentColor" strokeWidth="1.75" />
+      <path
+        d="M12 8v4l2.5 2.5"
+        stroke="currentColor"
+        strokeWidth="1.75"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
     </svg>
   );
 }

@@ -1,8 +1,8 @@
 /** Shared meta keywords for Yandex and legacy crawlers — Russian only. */
 const brandKeywords = [
-  "У Петровича",
   "ИП Филина Л.В.",
-  "строительные материалы у Петровича",
+  "ИП Филина Л.В.",
+  "строительные материалы ИП Филина Л.В.",
 ];
 
 const geoKeywords = [

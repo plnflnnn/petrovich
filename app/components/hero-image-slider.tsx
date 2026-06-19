@@ -2,9 +2,10 @@
 
 import { cn } from "@/lib/utils/cn";
 import type { SiteImage } from "@/lib/data/site-images";
+import { prefetchHeroSlides } from "@/lib/utils/prefetch-images";
 import Image from "next/image";
 import { useIsClient } from "@/lib/utils/use-is-client";
-import { useId, useState, type ReactNode } from "react";
+import { useEffect, useId, useState, type ReactNode } from "react";
 import type { Swiper as SwiperInstance } from "swiper";
 import { Autoplay, EffectFade } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -90,6 +91,11 @@ export function HeroImageSlider({
   const showControls = slides.length > 1;
   const firstSlide = slides[0];
 
+  useEffect(() => {
+    if (!isClient) return;
+    prefetchHeroSlides(slides, activeIndex);
+  }, [isClient, slides, activeIndex]);
+
   return (
     <div className={cn("relative flex flex-col", className, innerClassName)}>
       <div className="absolute inset-0 z-0" aria-labelledby={labelId}>
@@ -119,7 +125,7 @@ export function HeroImageSlider({
                   src={slide.src}
                   alt={slide.alt}
                   fill
-                  priority={priority && index === 0}
+                  priority={priority && index <= 1}
                   className="object-cover"
                   sizes={sizes}
                 />

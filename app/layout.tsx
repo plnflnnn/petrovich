@@ -1,4 +1,7 @@
 import { ClientShell } from "@/app/providers/client-shell";
+import { siteHeaderContent } from "@/app/home/_components/site-header-content";
+import { getSiteUrl } from "@/lib/seo/site-url";
+import { getSiteVerificationMetadata } from "@/lib/seo/site-verification";
 import { siteKeywords } from "@/lib/seo/site-keywords";
 import type { Metadata } from "next";
 import { Geist_Mono, Inter, Playfair_Display } from "next/font/google";
@@ -24,12 +27,17 @@ const playfair = Playfair_Display({
 });
 
 export const metadata: Metadata = {
-  title: "У Петровича",
+  metadataBase: getSiteUrl(),
+  title: {
+    default: siteHeaderContent.publicSiteName,
+    template: `%s | ${siteHeaderContent.legalName}`,
+  },
   keywords: siteKeywords,
+  verification: getSiteVerificationMetadata(),
   openGraph: {
     type: "website",
     locale: "ru_RU",
-    siteName: "У Петровича",
+    siteName: siteHeaderContent.publicSiteName,
     images: [
       {
         url: "/og-image.png",
@@ -56,6 +64,11 @@ export default function RootLayout({
       className={`${inter.variable} ${geistMono.variable} ${playfair.variable} h-full antialiased`}
       suppressHydrationWarning
     >
+      <head>
+        <link rel="preconnect" href="https://yandex.ru" />
+        <link rel="preconnect" href="https://static-maps.yandex.ru" />
+        <link rel="dns-prefetch" href="https://yandex.ru" />
+      </head>
       <body className="flex min-h-full flex-col font-sans" suppressHydrationWarning>
         <ClientShell>{children}</ClientShell>
       </body>

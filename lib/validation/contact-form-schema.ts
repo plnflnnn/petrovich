@@ -62,7 +62,14 @@ export type ContactFormMessages = {
   phoneRequired: string;
   phoneInvalid: string;
   commentMax: string;
+  privacyConsentRequired: string;
 };
+
+function privacyConsentField(message: string) {
+  return z
+    .boolean()
+    .refine((value) => value, { message });
+}
 
 export function createContactFormSchema(messages: ContactFormMessages) {
   return z.object({
@@ -76,6 +83,7 @@ export function createContactFormSchema(messages: ContactFormMessages) {
       invalid: messages.phoneInvalid,
     }),
     comment: commentField(messages.commentMax),
+    privacyConsent: privacyConsentField(messages.privacyConsentRequired),
   });
 }
 
@@ -88,6 +96,7 @@ export type RequestModalMessages = {
   districtRequired: string;
   districtCustomRequired: string;
   commentMax: string;
+  privacyConsentRequired: string;
 };
 
 export function createRequestModalSchema(
@@ -108,6 +117,7 @@ export function createRequestModalSchema(
       district: z.string().trim().min(1, messages.districtRequired),
       districtCustom: z.string().trim().max(200),
       comment: commentField(messages.commentMax),
+      privacyConsent: privacyConsentField(messages.privacyConsentRequired),
     })
     .superRefine((data, ctx) => {
       if (data.district === otherValue && data.districtCustom.length < 2) {

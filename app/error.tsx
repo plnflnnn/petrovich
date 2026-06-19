@@ -1,7 +1,9 @@
 "use client";
 
-import { reportClientError } from "@/lib/errors/report-client-error";
+import { PublicStatusPageShell } from "@/app/components/status-page/public-status-page-shell";
+import { StatusPageContent } from "@/app/components/status-page/status-page-content";
 import { PillButton } from "@/app/components/ui/pill-button";
+import { reportClientError } from "@/lib/errors/report-client-error";
 import Link from "next/link";
 import { useEffect } from "react";
 
@@ -21,28 +23,24 @@ export default function ErrorPage({ error, reset }: ErrorPageProps) {
   }, [error]);
 
   return (
-    <main className="flex flex-1 items-center justify-center px-4 py-20">
-      <div className="max-w-md text-center">
-        <p className="text-caption font-semibold uppercase tracking-kicker-sm text-accent">
-          Ошибка
-        </p>
-        <h1 className="mt-3 text-2xl font-semibold tracking-tight text-text">
-          Что-то пошло не так
-        </h1>
-        <p className="mt-3 text-sm leading-relaxed text-text-muted">
-          Страница не загрузилась. Попробуйте обновить или вернитесь на главную.
-        </p>
-        <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
-          <PillButton type="button" variant="primary" onClick={reset}>
-            Повторить
-          </PillButton>
-          <Link href="/">
-            <PillButton type="button" variant="secondary">
-              На главную
+    <PublicStatusPageShell>
+      <StatusPageContent
+        kicker="Ошибка"
+        title="Что-то пошло не так"
+        description="Страница не загрузилась. Попробуйте обновить или вернитесь на главную — мы уже получили уведомление об ошибке."
+        actions={
+          <>
+            <PillButton type="button" variant="primary" onClick={reset}>
+              Повторить
             </PillButton>
-          </Link>
-        </div>
-      </div>
-    </main>
+            <Link href="/">
+              <PillButton type="button" variant="secondary">
+                На главную
+              </PillButton>
+            </Link>
+          </>
+        }
+      />
+    </PublicStatusPageShell>
   );
 }

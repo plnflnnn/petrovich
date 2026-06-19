@@ -1,3 +1,4 @@
+import { WorkingHoursList } from "@/app/components/working-hours-list";
 import { Container } from "@/app/components/ui/container";
 import { SectionHeader } from "@/app/home/_components/section-header";
 import { siteHeaderContent } from "@/app/home/_components/site-header-content";
@@ -16,7 +17,7 @@ const contactChannels = [
         {siteHeaderContent.phoneDisplay}
       </a>
     ),
-    hint: "Позвоните — ответим на вопросы и поможем с расчётом",
+    hint: `Позвоните в рабочие часы — ${siteHeaderContent.workingHoursSummary}`,
   },
   {
     id: "office",
@@ -28,6 +29,13 @@ const contactChannels = [
       </p>
     ),
     hint: "Можно забрать заказ в офисе, если доставка до адреса не нужна",
+  },
+  {
+    id: "hours",
+    emoji: "🕐",
+    label: "Режим работы",
+    content: <WorkingHoursList />,
+    hint: "Заявки с сайта принимаем в любое время — ответим в рабочие часы",
   },
 ] as const;
 
@@ -82,7 +90,8 @@ export function ContactSection() {
                 Оставить заявку
               </h3>
               <p className="mt-2 text-sm-tight leading-relaxed text-text-muted">
-                Заполните форму — мы свяжемся с вами в ближайшее время.
+                Заполните форму — мы свяжемся с вами в рабочие часы (
+                {siteHeaderContent.workingHoursSummary}).
               </p>
               <div className="mt-6">
                 <ContactForm />

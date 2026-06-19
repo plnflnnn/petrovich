@@ -1,5 +1,6 @@
 "use client";
 
+import { PrivacyConsentField } from "@/app/components/privacy-consent-field";
 import { ClientOnly } from "@/app/components/client-only";
 import {
   ContactHoneypotField,
@@ -48,6 +49,8 @@ function ContactFormFields() {
     phoneRequired: "Укажите телефон",
     phoneInvalid: "Введите корректный номер (Россия)",
     commentMax: "Комментарий слишком длинный",
+    privacyConsentRequired:
+      "Подтвердите согласие на обработку персональных данных",
   });
 
   const {
@@ -62,6 +65,7 @@ function ContactFormFields() {
       name: "",
       phone: "",
       comment: "",
+      privacyConsent: false,
     },
   });
 
@@ -151,6 +155,11 @@ function ContactFormFields() {
           {fieldErrors.root.message}
         </p>
       ) : null}
+      <PrivacyConsentField
+        id="contact-privacy-consent"
+        error={fieldErrors.privacyConsent}
+        inputProps={register("privacyConsent")}
+      />
       <PillButton
         type="submit"
         variant="primary"

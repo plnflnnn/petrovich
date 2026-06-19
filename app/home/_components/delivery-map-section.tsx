@@ -1,22 +1,16 @@
 import { RequestModalButton } from "@/app/components/request-modal/request-modal-button";
 import { SiteLogo } from "@/app/components/site-logo";
+import { WorkingHoursList } from "@/app/components/working-hours-list";
 import { Container } from "@/app/components/ui/container";
+import { buildYandexMapEmbedUrl, buildYandexMapFullUrl, buildYandexStaticMapUrl } from "@/lib/data/office-map";
 import { YandexMapEmbed } from "@/app/home/_components/yandex-map-embed";
 import { siteHeaderContent } from "@/app/home/_components/site-header-content";
 
-const NSK_COORDS = "82.9204,55.0302";
-const OFFICE_COORDS = "80.286982,55.179272";
-/** Midpoint between Novosibirsk and Kargat office. */
-const MAP_CENTER = "81.604%2C55.115";
-/** Geographic span so both markers stay visible on narrow mobile viewports. */
-const MAP_SPN = "3.5%2C0.6";
-const MAP_MARKERS = `${encodeURIComponent(`${NSK_COORDS},pm2blm`)}~${encodeURIComponent(`${OFFICE_COORDS},pm2gnm`)}`;
-const YANDEX_BUSINESS_ID = "239928258122";
-const YANDEX_HOST = "yandex.ru";
-const MAP_EMBED_URL = `https://${YANDEX_HOST}/map-widget/v1/?ll=${MAP_CENTER}&spn=${MAP_SPN}&l=map&pt=${MAP_MARKERS}`;
-const MAP_FULL_URL = `https://${YANDEX_HOST}/maps/org/${YANDEX_BUSINESS_ID}/`;
+const MAP_EMBED_URL = buildYandexMapEmbedUrl();
+const MAP_STATIC_URL = buildYandexStaticMapUrl();
+const MAP_FULL_URL = buildYandexMapFullUrl();
 const OPEN_MAP_LABEL = "Открыть в Яндекс Картах";
-const MAP_CAPTION = "Новосибирск → Каргатский район";
+const DELIVERY_ZONE_NOTE = "Доставка из Новосибирска по Каргатскому району";
 
 export function DeliveryMapSection({
   sectionId = "zone",
@@ -37,7 +31,7 @@ export function DeliveryMapSection({
             <div className="inline-flex items-center gap-2.5">
               <SiteLogo size={28} className="shrink-0" />
               <span className="text-sm font-semibold tracking-tight text-text">
-                {siteHeaderContent.siteName}
+                {siteHeaderContent.publicSiteName}
               </span>
             </div>
 
@@ -70,10 +64,11 @@ export function DeliveryMapSection({
                   Наш офис в Каргате
                 </p>
                 <p className="mt-1 text-sm-tight font-semibold leading-tight text-text">
-                  г. Каргат, ул. Ленина, 147
+                  {siteHeaderContent.officeAddress}
                 </p>
-                <p className="mt-1 text-xs text-text-muted">
-                  {MAP_CAPTION}
+                <WorkingHoursList className="mt-2 max-w-xs" />
+                <p className="mt-2 text-xs text-text-muted">
+                  {DELIVERY_ZONE_NOTE}
                 </p>
               </div>
               <RequestModalButton variant="primary" />
@@ -81,12 +76,16 @@ export function DeliveryMapSection({
           </article>
 
           <div className="h-full overflow-hidden rounded-card-lg bg-white shadow-card-sm ring-1 ring-black/3">
-            <div className="relative aspect-use-case w-full bg-bg-soft sm:aspect-map">
-              <YandexMapEmbed src={MAP_EMBED_URL} title={MAP_CAPTION} />
+            <div className="relative aspect-use-case w-full bg-bg-soft">
+              <YandexMapEmbed
+                embedUrl={MAP_EMBED_URL}
+                staticMapUrl={MAP_STATIC_URL}
+                title={siteHeaderContent.officeAddress}
+              />
             </div>
             <div className="flex flex-wrap items-center justify-between gap-2 px-6 py-4">
               <p className="text-xs text-text-muted">
-                {MAP_CAPTION}
+                {siteHeaderContent.officeAddress}
               </p>
               <a
                 href={MAP_FULL_URL}

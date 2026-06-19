@@ -30,14 +30,14 @@ type ContactPayload = {
 
 function emailSubject(payload: ContactPayload): string {
   const label = SOURCE_LABELS[payload.source] ?? payload.source;
-  return `Заявка с сайта «У Петровича» — ${payload.name} (${label})`;
+  return `Заявка с сайта «ИП Филина Л.В.» — ${payload.name} (${label})`;
 }
 
 function emailText(payload: ContactPayload): string {
   const sourceLine = SOURCE_LABELS[payload.source] ?? payload.source;
 
   return [
-    "Новая заявка с сайта «У Петровича»",
+    "Новая заявка с сайта «ИП Филина Л.В.»",
     "",
     `Источник: ${sourceLine}`,
     `Дата: ${payload.at}`,

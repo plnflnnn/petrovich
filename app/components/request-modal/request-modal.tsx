@@ -5,6 +5,7 @@ import {
   useContactSpamGuard,
 } from "@/app/components/contact-spam-fields";
 import { PillButton } from "@/app/components/ui/pill-button";
+import { PrivacyConsentField } from "@/app/components/privacy-consent-field";
 import {
   RequestModalContext,
   type RequestModalProviderProps,
@@ -84,6 +85,8 @@ export const requestModalContent = {
     districtRequired: "Выберите район доставки",
     districtCustomRequired: "Уточните адрес или район",
     commentMax: "Комментарий слишком длинный",
+    privacyConsentRequired:
+      "Подтвердите согласие на обработку персональных данных",
     submitError: "Не удалось отправить. Попробуйте позже или позвоните нам."
   }
 };
@@ -113,6 +116,7 @@ export function RequestModal({ open, onOpenChange }: RequestModalProps) {
       districtRequired: m.errors.districtRequired,
       districtCustomRequired: m.errors.districtCustomRequired,
       commentMax: m.errors.commentMax,
+      privacyConsentRequired: m.errors.privacyConsentRequired,
     },
     otherValue,
   );
@@ -132,6 +136,7 @@ export function RequestModal({ open, onOpenChange }: RequestModalProps) {
       district: defaultDistrict,
       districtCustom: "",
       comment: "",
+      privacyConsent: false,
     },
   });
 
@@ -367,6 +372,12 @@ export function RequestModal({ open, onOpenChange }: RequestModalProps) {
                     {errors.root.message}
                   </p>
                 ) : null}
+
+                <PrivacyConsentField
+                  id="request-privacy-consent"
+                  error={errors.privacyConsent}
+                  inputProps={register("privacyConsent")}
+                />
 
                 <div className="mt-2 flex flex-col-reverse gap-2 sm:flex-row sm:items-center sm:justify-end sm:gap-3">
                   <PillButton

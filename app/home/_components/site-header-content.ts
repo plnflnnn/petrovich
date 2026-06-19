@@ -5,8 +5,13 @@ const equipmentLine = businessLines.find((l) => l.id === "equipment")!;
 const transportLine = businessLines.find((l) => l.id === "transport")!;
 
 export const siteHeaderContent = {
-  siteName: "У Петровича",
+  /** Short label in the header next to the logo. */
+  siteName: "ИП Филина Л.В.",
+  /** Public site name used in metadata, footer, and content blocks. */
+  publicSiteName: "Строительные и отделочные материалы под заказ",
   legalName: "ИП Филина Л.В.",
+  inn: "542305896546",
+  ogrnip: "313548502300064",
   nav: {
     items: [
       { label: "Главная", href: "/", kind: "page" as const },
@@ -23,6 +28,11 @@ export const siteHeaderContent = {
   phoneDisplay: "8-913-000-59-59",
   phoneTel: "+79130005959",
   officeAddress: "г. Каргат, ул. Ленина, 147",
+  workingHours: [
+    { days: "Пн — Пт", hours: "10:00–15:00" },
+    { days: "Сб — Вс", hours: "Выходной" },
+  ] as const,
+  workingHoursSummary: "Пн–Пт, 10:00–15:00",
   categories: {
     items: [
       {
