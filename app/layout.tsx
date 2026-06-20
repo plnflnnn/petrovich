@@ -4,18 +4,14 @@ import { getSiteUrl } from "@/lib/seo/site-url";
 import { getSiteVerificationMetadata } from "@/lib/seo/site-verification";
 import { siteKeywords } from "@/lib/seo/site-keywords";
 import type { Metadata } from "next";
-import { Geist_Mono, Inter, Playfair_Display } from "next/font/google";
+import { Inter, Playfair_Display } from "next/font/google";
 import "./globals.css";
 
 const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin", "cyrillic"],
+  weight: ["400", "500", "600", "700"],
   display: "swap",
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
 });
 
 const playfair = Playfair_Display({
@@ -24,6 +20,7 @@ const playfair = Playfair_Display({
   weight: ["400", "500"],
   style: ["italic"],
   display: "swap",
+  preload: false,
 });
 
 export const metadata: Metadata = {
@@ -61,7 +58,7 @@ export default function RootLayout({
   return (
     <html
       lang="ru"
-      className={`${inter.variable} ${geistMono.variable} ${playfair.variable} h-full antialiased`}
+      className={`${inter.variable} ${playfair.variable} h-full antialiased`}
       suppressHydrationWarning
     >
       <head>

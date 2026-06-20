@@ -18,6 +18,7 @@ import {
 } from "@/lib/validation/contact-form-schema";
 import { submitContactRequest } from "@/lib/validation/submit-contact";
 import { useIsClient } from "@/lib/utils/use-is-client";
+import { useBodyScrollLock } from "@/lib/utils/body-scroll-lock";
 import {
   formInputClass,
   formLabelClass,
@@ -106,6 +107,8 @@ export function RequestModal({ open, onOpenChange }: RequestModalProps) {
   const isClient = useIsClient();
   const { honeypotRef, getSpamFields } = useContactSpamGuard({ active: open });
 
+  useBodyScrollLock(open);
+
   const schema = createRequestModalSchema(
     {
       nameRequired: m.errors.nameRequired,
@@ -151,15 +154,6 @@ export function RequestModal({ open, onOpenChange }: RequestModalProps) {
     }, 200);
     return () => clearTimeout(t);
   }, [open, reset]);
-
-  useEffect(() => {
-    if (!open) return;
-    const previousOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-    return () => {
-      document.body.style.overflow = previousOverflow;
-    };
-  }, [open]);
 
   async function onValid(data: RequestModalValues) {
     const districtLabel =

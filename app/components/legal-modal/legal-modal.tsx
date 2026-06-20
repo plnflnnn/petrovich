@@ -2,8 +2,8 @@
 
 import { PillButton } from "@/app/components/ui/pill-button";
 import { useIsClient } from "@/lib/utils/use-is-client";
+import { useBodyScrollLock } from "@/lib/utils/body-scroll-lock";
 import { modalOverlayClass } from "@/lib/utils/styles";
-import { useEffect } from "react";
 import { createPortal } from "react-dom";
 
 type LegalDoc = {
@@ -33,14 +33,7 @@ export function LegalModal({
 }: LegalModalProps) {
   const isClient = useIsClient();
 
-  useEffect(() => {
-    if (!open) return;
-    const previousOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-    return () => {
-      document.body.style.overflow = previousOverflow;
-    };
-  }, [open]);
+  useBodyScrollLock(open);
 
   if (!isClient || !open || !doc) return null;
 

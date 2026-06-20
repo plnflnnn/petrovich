@@ -7,6 +7,7 @@ import {
   CTA_POPUP_STORAGE_KEY,
 } from "@/lib/data/cta-content";
 import { useIsClient } from "@/lib/utils/use-is-client";
+import { useBodyScrollLock } from "@/lib/utils/body-scroll-lock";
 import { modalShellClass } from "@/lib/utils/styles";
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
@@ -38,6 +39,8 @@ export function TimedCtaPopup() {
   const requestModal = useRequestModal();
   const [open, setOpen] = useState(false);
 
+  useBodyScrollLock(open);
+
   useEffect(() => {
     clearDismissForDevTest();
     if (isPopupDismissed()) return;
@@ -55,18 +58,10 @@ export function TimedCtaPopup() {
   }
 
   function openContactModal() {
-    dismiss();
-    window.requestAnimationFrame(() => requestModal.open());
+    persistPopupDismissed();
+    requestModal.open();
+    setOpen(false);
   }
-
-  useEffect(() => {
-    if (!open) return;
-    const previousOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-    return () => {
-      document.body.style.overflow = previousOverflow;
-    };
-  }, [open]);
 
   if (!isClient || !open) return null;
 

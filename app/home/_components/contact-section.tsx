@@ -28,7 +28,7 @@ const contactChannels = [
         {siteHeaderContent.officeAddress}
       </p>
     ),
-    hint: "Можно забрать заказ в офисе, если доставка до адреса не нужна",
+    hint: "Приезжайте в офис — покажем образцы и поможем с расчётом",
   },
   {
     id: "hours",

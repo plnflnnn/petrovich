@@ -113,7 +113,7 @@
   --z-index-modal: 100;
 
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
-  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+  --font-mono: ui-monospace, monospace;
   --font-display: var(--font-playfair), Georgia, serif;
 }
 

@@ -115,7 +115,7 @@ function FooterContacts() {
             {phoneDisplay}
           </span>
           <span className="mt-1.5 block text-xs-plus leading-relaxed text-white/50">
-            Позвоните в рабочие часы — {siteHeaderContent.workingHoursSummary}
+            Позвоните в рабочие часы <br /> {siteHeaderContent.workingHoursSummary}
           </span>
         </span>
       </a>
@@ -135,7 +135,7 @@ function FooterContacts() {
             {officeAddress}
           </span>
           <span className="mt-1.5 block text-xs-plus leading-relaxed text-white/50">
-            Можно забрать заказ в офисе в рабочие часы
+            Приезжайте посмотреть образцы и сделать расчёт
           </span>
         </span>
       </div>
