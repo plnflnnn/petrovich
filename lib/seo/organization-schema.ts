@@ -12,6 +12,17 @@ function getOfferCatalog(): Record<string, unknown> {
       name: item.title,
       description: item.description,
       url: absoluteSiteUrl(categoryPath(item.slug)),
+      brand: {
+        "@type": "Brand",
+        name: siteHeaderContent.legalName,
+      },
+      offers: {
+        "@type": "AggregateOffer",
+        priceCurrency: "RUB",
+        lowPrice: item.fromPrice,
+        availability: "https://schema.org/InStock",
+        seller: { "@id": absoluteSiteUrl("/#business") },
+      },
     },
   }));
 
@@ -47,8 +58,17 @@ export function getOrganizationSchema(): Record<string, unknown> {
       "Доставка строительных и отделочных материалов из Новосибирска в Каргат, Каргатский район и другие районы Новосибирской области. Кровля, заборы, окна, двери, фасад, утеплитель, гипсокартон, пиломатериалы. Также ковка, хозтехника под заказ и грузоперевозки.",
     url: absoluteSiteUrl("/"),
     telephone: siteHeaderContent.phoneTel,
+    email: siteHeaderContent.email,
     image: absoluteSiteUrl("/og.png"),
     logo: absoluteSiteUrl("/og.png"),
+    contactPoint: {
+      "@type": "ContactPoint",
+      telephone: siteHeaderContent.phoneTel,
+      email: siteHeaderContent.email,
+      contactType: "sales",
+      areaServed: "RU",
+      availableLanguage: "Russian",
+    },
     priceRange: "₽₽",
     taxID: siteHeaderContent.inn,
     identifier: {
