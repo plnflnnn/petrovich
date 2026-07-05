@@ -1,4 +1,5 @@
 import { ClientShell } from "@/app/providers/client-shell";
+import { StructuredData } from "@/app/components/structured-data";
 import { siteHeaderContent } from "@/app/home/_components/site-header-content";
 import { getSiteUrl } from "@/lib/seo/site-url";
 import { getSiteVerificationMetadata } from "@/lib/seo/site-verification";
@@ -64,6 +65,7 @@ export default function RootLayout({
       <head>
         <link rel="preconnect" href="https://yandex.ru" />
         <link rel="dns-prefetch" href="https://yandex.ru" />
+        <StructuredData />
       </head>
       <body className="flex min-h-full flex-col font-sans" suppressHydrationWarning>
         <ClientShell>{children}</ClientShell>

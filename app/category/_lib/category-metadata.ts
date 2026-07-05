@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { keywordsForCategory } from "@/lib/seo/site-keywords";
+import { categoryPath } from "@/lib/utils/routes";
 
 export function categoryMetadata(category: {
   slug: string;
@@ -9,5 +10,8 @@ export function categoryMetadata(category: {
     title: { absolute: category.meta.title },
     description: category.meta.description,
     keywords: keywordsForCategory(category.slug),
+    alternates: {
+      canonical: categoryPath(category.slug),
+    },
   };
 }
