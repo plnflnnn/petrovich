@@ -1,47 +1,6 @@
 import { siteHeaderContent } from "@/app/home/_components/site-header-content";
 import { officeCoords, buildYandexMapFullUrl } from "@/lib/data/office-map";
 import { absoluteSiteUrl } from "@/lib/seo/site-url";
-import { categoryPath, servicePath } from "@/lib/utils/routes";
-
-/** Machine-readable catalog of goods and services for rich results. */
-function getOfferCatalog(): Record<string, unknown> {
-  const goods = siteHeaderContent.categories.items.map((item) => ({
-    "@type": "Offer",
-    itemOffered: {
-      "@type": "Product",
-      name: item.title,
-      description: item.description,
-      url: absoluteSiteUrl(categoryPath(item.slug)),
-      brand: {
-        "@type": "Brand",
-        name: siteHeaderContent.legalName,
-      },
-      offers: {
-        "@type": "AggregateOffer",
-        priceCurrency: "RUB",
-        lowPrice: item.fromPrice,
-        availability: "https://schema.org/InStock",
-        seller: { "@id": absoluteSiteUrl("/#business") },
-      },
-    },
-  }));
-
-  const services = siteHeaderContent.services.items.map((item) => ({
-    "@type": "Offer",
-    itemOffered: {
-      "@type": "Service",
-      name: item.title,
-      description: item.description,
-      url: absoluteSiteUrl(servicePath(item.slug)),
-    },
-  }));
-
-  return {
-    "@type": "OfferCatalog",
-    name: "Строительные и отделочные материалы и услуги",
-    itemListElement: [...goods, ...services],
-  };
-}
 
 /**
  * LocalBusiness (HardwareStore) JSON-LD describing the business for Google and
@@ -108,6 +67,5 @@ export function getOrganizationSchema(): Record<string, unknown> {
       },
     ],
     sameAs: [buildYandexMapFullUrl()],
-    hasOfferCatalog: getOfferCatalog(),
   };
 }
