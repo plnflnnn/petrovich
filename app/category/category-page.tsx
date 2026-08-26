@@ -1,7 +1,9 @@
 import { FooterSection } from "@/app/home/_components/footer-section";
 import { SiteHeader } from "@/app/home/_components/site-header";
+import { StructuredData } from "@/app/components/structured-data";
 import type { CategoryDefinition } from "@/lib/data/category";
 import { enrichCategory } from "@/lib/data/site-images";
+import { getCategoryPageSchema } from "@/lib/seo/category-schema";
 import { DeliveryMapSection } from "@/app/home/_components/delivery-map-section";
 import { CategoryHeroSection } from "./_components/category-hero-section";
 import { CategoryTrustSection } from "./_components/category-trust-section";
@@ -16,6 +18,7 @@ export function CategoryPage({ category: categorySource }: CategoryPageProps) {
 
   return (
     <>
+      <StructuredData schema={getCategoryPageSchema(category)} />
       <SiteHeader />
       <main className="flex-1">
         <CategoryHeroSection category={category} />

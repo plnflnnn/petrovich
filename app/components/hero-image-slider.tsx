@@ -39,6 +39,7 @@ function SliderControls({
 }: SliderControlsProps) {
   return (
     <div
+      role="group"
       className={cn("flex items-center gap-2", className)}
       aria-label="Управление слайдером"
     >

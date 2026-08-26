@@ -51,9 +51,15 @@ export function VisualCardsSection({
 
         {children ? <div className="mt-10">{children}</div> : null}
 
-        <div className={children ? "mt-10 grid gap-5 sm:grid-cols-2" : "mt-12 grid gap-5 sm:grid-cols-2"}>
+        <ul
+          className={
+            children
+              ? "mt-10 grid gap-5 sm:grid-cols-2"
+              : "mt-12 grid gap-5 sm:grid-cols-2"
+          }
+        >
           {items.map((item) => (
-            <article
+            <li
               key={item.title}
               className="group flex flex-col overflow-hidden rounded-card-md bg-white shadow-card-sm ring-1 ring-black/3 transition-lift duration-300 hover:-translate-y-0.5 hover:shadow-card-hover-sm hover:ring-accent/20"
             >
@@ -92,9 +98,9 @@ export function VisualCardsSection({
                   </div>
                 )}
               </div>
-            </article>
+            </li>
           ))}
-        </div>
+        </ul>
       </Container>
     </section>
   );

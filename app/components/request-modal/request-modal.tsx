@@ -183,27 +183,38 @@ export function RequestModal({ open, onOpenChange }: RequestModalProps) {
   if (!isClient || !open) return null;
 
   const modalContent = (
-    <div className={modalOverlayTopClass}>
+    <div
+      className={cn(
+        modalOverlayTopClass,
+        "overflow-y-auto overscroll-contain",
+      )}
+    >
       <button
         type="button"
         aria-label={m.close}
         onClick={() => onOpenChange(false)}
-        className="absolute inset-0 cursor-default bg-black/55 backdrop-blur-sm"
+        className="fixed inset-0 cursor-default bg-black/55 backdrop-blur-sm"
       />
-      <div
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="request-modal-title"
-        aria-describedby="request-modal-description"
-        className="absolute left-1/2 top-1/2 z-10 w-modal max-h-modal -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-card-lg bg-white shadow-modal"
-      >
-        <div className="flex max-h-inherit flex-col">
+      <div className="relative flex min-h-full items-center justify-center px-4 py-8">
+        <div
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="request-modal-title"
+          aria-describedby="request-modal-description"
+          className="relative z-10 w-modal rounded-card-lg bg-white shadow-modal"
+        >
           <div className="flex items-start justify-between gap-4 px-6 pb-4 pt-6 sm:px-8 sm:pt-8">
             <div>
-              <h2 id="request-modal-title" className="text-xl font-semibold tracking-tight text-text sm:text-2xl">
+              <h2
+                id="request-modal-title"
+                className="text-xl font-semibold tracking-tight text-text sm:text-2xl"
+              >
                 {m.title}
               </h2>
-              <p id="request-modal-description" className="mt-1.5 text-sm leading-relaxed text-text-muted">
+              <p
+                id="request-modal-description"
+                className="mt-1.5 text-sm leading-relaxed text-text-muted"
+              >
                 {m.description}
               </p>
             </div>
@@ -214,17 +225,28 @@ export function RequestModal({ open, onOpenChange }: RequestModalProps) {
               className="-mr-2 -mt-1 inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-text-muted transition-colors hover:bg-black/5 hover:text-text"
             >
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden>
-                <path d="M6 6l12 12M18 6L6 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                <path
+                  d="M6 6l12 12M18 6L6 18"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                />
               </svg>
             </button>
           </div>
 
-          <div className="overflow-y-auto px-6 pb-6 sm:px-8 sm:pb-8">
+          <div className="px-6 pb-6 sm:px-8 sm:pb-8">
             {sent ? (
               <div className="rounded-2xl bg-accent/10 px-5 py-6 text-center">
                 <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-accent text-white">
                   <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden>
-                    <path d="M5 12.5l4.5 4.5L19 7" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" />
+                    <path
+                      d="M5 12.5l4.5 4.5L19 7"
+                      stroke="currentColor"
+                      strokeWidth="2.4"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
                   </svg>
                 </div>
                 <p className="text-base font-semibold text-text">{m.success}</p>
@@ -242,7 +264,11 @@ export function RequestModal({ open, onOpenChange }: RequestModalProps) {
                 </PillButton>
               </div>
             ) : (
-              <form className="relative grid gap-4" onSubmit={handleSubmit(onValid)} noValidate>
+              <form
+                className="relative grid gap-4"
+                onSubmit={handleSubmit(onValid)}
+                noValidate
+              >
                 <ContactHoneypotField inputRef={honeypotRef} id="rm-hp" />
                 <div>
                   <label htmlFor="rm-name" className={formLabelClass}>
@@ -259,7 +285,11 @@ export function RequestModal({ open, onOpenChange }: RequestModalProps) {
                     {...register("name")}
                   />
                   {errors.name ? (
-                    <p id="rm-name-error" className="mt-1.5 text-sm text-red-700" role="alert">
+                    <p
+                      id="rm-name-error"
+                      className="mt-1.5 text-sm text-red-700"
+                      role="alert"
+                    >
                       {errors.name.message}
                     </p>
                   ) : null}
@@ -280,7 +310,11 @@ export function RequestModal({ open, onOpenChange }: RequestModalProps) {
                     {...register("phone")}
                   />
                   {errors.phone ? (
-                    <p id="rm-phone-error" className="mt-1.5 text-sm text-red-700" role="alert">
+                    <p
+                      id="rm-phone-error"
+                      className="mt-1.5 text-sm text-red-700"
+                      role="alert"
+                    >
                       {errors.phone.message}
                     </p>
                   ) : null}
@@ -300,7 +334,9 @@ export function RequestModal({ open, onOpenChange }: RequestModalProps) {
                       backgroundPosition: "right 1rem center",
                     }}
                     aria-invalid={errors.district ? true : undefined}
-                    aria-describedby={errors.district ? "rm-district-error" : undefined}
+                    aria-describedby={
+                      errors.district ? "rm-district-error" : undefined
+                    }
                     {...register("district")}
                   >
                     <option value="" disabled>
@@ -313,7 +349,11 @@ export function RequestModal({ open, onOpenChange }: RequestModalProps) {
                     ))}
                   </select>
                   {errors.district ? (
-                    <p id="rm-district-error" className="mt-1.5 text-sm text-red-700" role="alert">
+                    <p
+                      id="rm-district-error"
+                      className="mt-1.5 text-sm text-red-700"
+                      role="alert"
+                    >
                       {errors.district.message}
                     </p>
                   ) : null}
@@ -321,7 +361,10 @@ export function RequestModal({ open, onOpenChange }: RequestModalProps) {
 
                 {isOther ? (
                   <div>
-                    <label htmlFor="rm-district-custom" className={formLabelClass}>
+                    <label
+                      htmlFor="rm-district-custom"
+                      className={formLabelClass}
+                    >
                       {m.fields.districtCustom}
                     </label>
                     <input
@@ -330,11 +373,19 @@ export function RequestModal({ open, onOpenChange }: RequestModalProps) {
                       placeholder={m.fields.districtCustomPlaceholder}
                       className={formInputClass}
                       aria-invalid={errors.districtCustom ? true : undefined}
-                      aria-describedby={errors.districtCustom ? "rm-district-custom-error" : undefined}
+                      aria-describedby={
+                        errors.districtCustom
+                          ? "rm-district-custom-error"
+                          : undefined
+                      }
                       {...register("districtCustom")}
                     />
                     {errors.districtCustom ? (
-                      <p id="rm-district-custom-error" className="mt-1.5 text-sm text-red-700" role="alert">
+                      <p
+                        id="rm-district-custom-error"
+                        className="mt-1.5 text-sm text-red-700"
+                        role="alert"
+                      >
                         {errors.districtCustom.message}
                       </p>
                     ) : null}
@@ -347,15 +398,21 @@ export function RequestModal({ open, onOpenChange }: RequestModalProps) {
                   </label>
                   <textarea
                     id="rm-comment"
-                    rows={4}
+                    rows={3}
                     placeholder={m.fields.commentPlaceholder}
                     className={cn(formInputClass, "resize-y")}
                     aria-invalid={errors.comment ? true : undefined}
-                    aria-describedby={errors.comment ? "rm-comment-error" : undefined}
+                    aria-describedby={
+                      errors.comment ? "rm-comment-error" : undefined
+                    }
                     {...register("comment")}
                   />
                   {errors.comment ? (
-                    <p id="rm-comment-error" className="mt-1.5 text-sm text-red-700" role="alert">
+                    <p
+                      id="rm-comment-error"
+                      className="mt-1.5 text-sm text-red-700"
+                      role="alert"
+                    >
                       {errors.comment.message}
                     </p>
                   ) : null}

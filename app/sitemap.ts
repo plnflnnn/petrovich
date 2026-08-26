@@ -9,6 +9,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
     url: absoluteSiteUrl(path),
     lastModified,
     changeFrequency: path === "/" ? "weekly" : "monthly",
-    priority: path === "/" ? 1 : path.startsWith("/category/") ? 0.8 : 0.7,
+    priority:
+      path === "/"
+        ? 1
+        : path === "/service/delivery"
+          ? 0.9
+          : path.startsWith("/category/")
+            ? 0.8
+            : 0.7,
   }));
 }

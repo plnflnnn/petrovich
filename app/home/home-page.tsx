@@ -1,3 +1,5 @@
+import { StructuredData } from "@/app/components/structured-data";
+import { getHomePageSchema } from "@/lib/seo/home-schema";
 import { AboutSection } from "./_components/about-section";
 import { CategoriesSection } from "./_components/categories-section";
 import { ServicesSection } from "./_components/services-section";
@@ -11,6 +13,7 @@ import { SiteHeader } from "./_components/site-header";
 export function HomePage() {
   return (
     <>
+      <StructuredData schema={getHomePageSchema()} />
       <SiteHeader />
       <main className="flex-1">
         <HeroSection />
@@ -20,8 +23,8 @@ export function HomePage() {
         <ProcessSection />
         <DeliveryMapSection />
         <ContactSection />
-        <FooterSection />
       </main>
+      <FooterSection />
     </>
   );
 }

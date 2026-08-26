@@ -1,12 +1,12 @@
 "use client";
 
+import { BreadcrumbNav } from "@/app/components/breadcrumb-nav";
 import { HeroImageSlider } from "@/app/components/hero-image-slider";
 import { PillButton } from "@/app/components/ui/pill-button";
 import { Container } from "@/app/components/ui/container";
 import { useRequestModal } from "@/app/components/request-modal/request-modal-context";
 import type { Service } from "@/lib/data/service";
 import { homeAnchor } from "@/lib/utils/routes";
-import Link from "next/link";
 
 export function ServiceHeroSection({ service }: { service: Service }) {
   const requestModal = useRequestModal();
@@ -32,33 +32,14 @@ export function ServiceHeroSection({ service }: { service: Service }) {
             {service.heroKicker}
           </p>
 
-          <nav
-            aria-label="Breadcrumb"
+          <BreadcrumbNav
             className="absolute right-6 top-6 z-20 hidden text-caption font-medium text-white/75 sm:right-10 sm:top-10 sm:block"
-          >
-            <ol className="flex items-center gap-1.5">
-              <li>
-                <Link href="/" className="transition-colors hover:text-white">
-                  Главная
-                </Link>
-              </li>
-              <li aria-hidden className="text-white/45">
-                ›
-              </li>
-              <li>
-                <Link
-                  href={homeAnchor("#services")}
-                  className="transition-colors hover:text-white"
-                >
-                  Услуги
-                </Link>
-              </li>
-              <li aria-hidden className="text-white/45">
-                ›
-              </li>
-              <li className="text-white">{service.title}</li>
-            </ol>
-          </nav>
+            items={[
+              { label: "Главная", href: "/" },
+              { label: "Услуги", href: homeAnchor("#services") },
+              { label: service.title },
+            ]}
+          />
 
           <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 p-6 sm:p-10 sm:pr-40 lg:p-14 lg:pr-48">
             <h1 className="max-w-hero-title-lg text-4xl font-semibold leading-tighter tracking-tightest text-white sm:text-5xl lg:text-hero-lg">

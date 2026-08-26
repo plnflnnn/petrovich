@@ -5,7 +5,7 @@ import { WorkingHoursList } from "@/app/components/working-hours-list";
 import { Container } from "@/app/components/ui/container";
 import { LegalModal } from "@/app/components/legal-modal/legal-modal";
 import { siteHeaderContent } from "@/app/home/_components/site-header-content";
-import { navHref } from "@/lib/utils/routes";
+import { categoryPath, navHref, servicePath } from "@/lib/utils/routes";
 import * as Separator from "@radix-ui/react-separator";
 import Link from "next/link";
 import { useState } from "react";
@@ -38,16 +38,60 @@ export function FooterSection() {
               </p>
             </div>
 
-            <nav className="flex flex-wrap gap-x-8 gap-y-2 sm:justify-end lg:max-w-md lg:pt-0.5">
-              {siteHeaderContent.nav.items.map((item) => (
-                <Link
-                  key={item.href}
-                  href={navHref(item.href)}
-                  className="text-sm-tight font-medium text-white/65 transition-colors hover:text-accent"
-                >
-                  {item.label}
-                </Link>
-              ))}
+            <nav
+              aria-label="Основные разделы"
+              className="lg:max-w-md lg:pt-0.5"
+            >
+              <ul className="flex flex-wrap gap-x-8 gap-y-2 sm:justify-end">
+                {siteHeaderContent.nav.items.map((item) => (
+                  <li key={item.href}>
+                    <Link
+                      href={navHref(item.href)}
+                      className="text-sm-tight font-medium text-white/65 transition-colors hover:text-accent"
+                    >
+                      {item.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+          </div>
+
+          <div className="mt-10 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+            <nav aria-label="Категории материалов">
+              <p className="text-caption font-semibold uppercase tracking-kicker-sm text-accent">
+                Категории
+              </p>
+              <ul className="mt-3 grid gap-2">
+                {siteHeaderContent.categories.items.map((cat) => (
+                  <li key={cat.slug}>
+                    <Link
+                      href={categoryPath(cat.slug)}
+                      className="text-sm-tight text-white/65 transition-colors hover:text-accent"
+                    >
+                      {cat.title}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+
+            <nav aria-label="Услуги">
+              <p className="text-caption font-semibold uppercase tracking-kicker-sm text-accent">
+                Услуги
+              </p>
+              <ul className="mt-3 grid gap-2">
+                {siteHeaderContent.services.items.map((service) => (
+                  <li key={service.slug}>
+                    <Link
+                      href={servicePath(service.slug)}
+                      className="text-sm-tight text-white/65 transition-colors hover:text-accent"
+                    >
+                      {service.title}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
             </nav>
           </div>
 
@@ -93,10 +137,10 @@ export function FooterSection() {
 }
 
 function FooterContacts() {
-  const { phoneTel, phoneDisplay, officeAddress } = siteHeaderContent;
+  const { phoneTel, phoneDisplay, officeAddress, email } = siteHeaderContent;
 
   return (
-    <address className="mt-4 grid grid-cols-1 gap-3 not-italic sm:grid-cols-2 sm:gap-4 lg:grid-cols-3">
+    <div className="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4 lg:grid-cols-4">
       <a
         href={`tel:${phoneTel}`}
         className="group flex h-full gap-3.5 rounded-card-sm bg-white/6 p-4 ring-1 ring-white/10 transition-colors hover:bg-white/10 hover:ring-white/15"
@@ -120,6 +164,29 @@ function FooterContacts() {
         </span>
       </a>
 
+      <a
+        href={`mailto:${email}`}
+        className="group flex h-full gap-3.5 rounded-card-sm bg-white/6 p-4 ring-1 ring-white/10 transition-colors hover:bg-white/10 hover:ring-white/15"
+      >
+        <span
+          className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-accent/15 text-accent ring-1 ring-accent/25 transition-colors group-hover:bg-accent/25"
+          aria-hidden
+        >
+          <MailIcon />
+        </span>
+        <span className="min-w-0 pt-0.5">
+          <span className="block text-caption font-semibold uppercase tracking-kicker-sm text-accent">
+            Email
+          </span>
+          <span className="mt-1 block break-all text-sm-plus font-semibold leading-snug text-white transition-colors group-hover:text-accent">
+            {email}
+          </span>
+          <span className="mt-1.5 block text-xs-plus leading-relaxed text-white/50">
+            Напишите нам — ответим в рабочие часы
+          </span>
+        </span>
+      </a>
+
       <div className="flex h-full gap-3.5 rounded-card-sm bg-white/6 p-4 ring-1 ring-white/10">
         <span
           className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white/8 text-white/80 ring-1 ring-white/12"
@@ -131,9 +198,9 @@ function FooterContacts() {
           <span className="block text-caption font-semibold uppercase tracking-kicker-sm text-accent">
             Офис в Каргате
           </span>
-          <span className="mt-1 block text-sm-plus font-semibold leading-snug text-white">
+          <address className="mt-1 not-italic text-sm-plus font-semibold leading-snug text-white">
             {officeAddress}
-          </span>
+          </address>
           <span className="mt-1.5 block text-xs-plus leading-relaxed text-white/50">
             Приезжайте посмотреть образцы и сделать расчёт
           </span>
@@ -154,7 +221,7 @@ function FooterContacts() {
           <WorkingHoursList variant="on-dark" className="mt-2" />
         </span>
       </div>
-    </address>
+    </div>
   );
 }
 
@@ -165,6 +232,29 @@ function PhoneIcon() {
         d="M5 4h3l2 5-2.5 1.5a11 11 0 0 0 5 5L12 13l5 2v3a2 2 0 0 1-2 2A15 15 0 0 1 3 6a2 2 0 0 1 2-2Z"
         stroke="currentColor"
         strokeWidth="1.75"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
+function MailIcon() {
+  return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden>
+      <rect
+        x="3.75"
+        y="5.75"
+        width="16.5"
+        height="12.5"
+        rx="2"
+        stroke="currentColor"
+        strokeWidth="1.75"
+      />
+      <path
+        d="M4.5 7.5 12 12.5 19.5 7.5"
+        stroke="currentColor"
+        strokeWidth="1.75"
+        strokeLinecap="round"
         strokeLinejoin="round"
       />
     </svg>
@@ -199,4 +289,3 @@ function ClockIcon() {
     </svg>
   );
 }
-

@@ -20,13 +20,27 @@ const contactChannels = [
     hint: `Позвоните в рабочие часы — ${siteHeaderContent.workingHoursSummary}`,
   },
   {
+    id: "email",
+    emoji: "✉️",
+    label: "Email",
+    content: (
+      <a
+        href={`mailto:${siteHeaderContent.email}`}
+        className="text-sm-plus font-semibold leading-snug text-text transition-colors hover:text-accent"
+      >
+        {siteHeaderContent.email}
+      </a>
+    ),
+    hint: "Напишите нам — ответим в рабочие часы",
+  },
+  {
     id: "office",
     emoji: "📍",
     label: "Офис в Каргате",
     content: (
-      <p className="text-sm-plus font-semibold leading-snug text-text">
+      <address className="not-italic text-sm-plus font-semibold leading-snug text-text">
         {siteHeaderContent.officeAddress}
-      </p>
+      </address>
     ),
     hint: "Приезжайте в офис — покажем образцы и поможем с расчётом",
   },
@@ -99,8 +113,6 @@ export function ContactSection() {
             </div>
           </div>
         </div>
-
-        {/* <CtaBandPanel className="mt-8" showBody={false} /> */}
       </Container>
     </section>
   );

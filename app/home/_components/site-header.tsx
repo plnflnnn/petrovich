@@ -64,6 +64,22 @@ export function SiteHeader() {
 
   return (
     <header className="fixed inset-x-0 top-0 z-overlay bg-bg/85">
+      {/* Always in HTML so crawlers can discover category/service URLs even when dropdowns are closed. */}
+      <nav className="sr-only" aria-label="Каталог сайта">
+        <ul>
+          {content.categories.items.map((cat) => (
+            <li key={`seo-cat-${cat.slug}`}>
+              <Link href={categoryPath(cat.slug)}>{cat.title}</Link>
+            </li>
+          ))}
+          {content.services.items.map((service) => (
+            <li key={`seo-svc-${service.slug}`}>
+              <Link href={servicePath(service.slug)}>{service.title}</Link>
+            </li>
+          ))}
+        </ul>
+      </nav>
+
       <Container className="flex h-16 items-center justify-between gap-4 lg:h-18">
         <Link
           href="/"
@@ -73,7 +89,10 @@ export function SiteHeader() {
           <span>{content.siteName}</span>
         </Link>
 
-        <nav className="absolute left-1/2 hidden -translate-x-1/2 items-center gap-8 nav:flex">
+        <nav
+          aria-label="Основная навигация"
+          className="absolute left-1/2 hidden -translate-x-1/2 items-center gap-8 nav:flex"
+        >
           {content.nav.items.map((item) => {
             if (item.kind === "categories") {
               return (
@@ -232,7 +251,7 @@ export function SiteHeader() {
             aria-modal="false"
             className="fixed inset-x-4 top-20 z-nav max-h-mobile-menu overflow-y-auto rounded-card-lg bg-white p-6 shadow-xl nav:hidden"
           >
-            <nav className="flex flex-col gap-1">
+            <nav aria-label="Мобильное меню" className="flex flex-col gap-1">
               {content.nav.items.map((item) => {
                 if (item.kind === "categories") {
                   return (

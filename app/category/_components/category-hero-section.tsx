@@ -1,5 +1,6 @@
 "use client";
 
+import { BreadcrumbNav } from "@/app/components/breadcrumb-nav";
 import { RequestModalButton } from "@/app/components/request-modal/request-modal-button";
 import { PillButton } from "@/app/components/ui/pill-button";
 import { Container } from "@/app/components/ui/container";
@@ -7,7 +8,6 @@ import { useRequestModal } from "@/app/components/request-modal/request-modal-co
 import { HeroImageSlider } from "@/app/components/hero-image-slider";
 import type { Category } from "@/lib/data/category";
 import { homeAnchor } from "@/lib/utils/routes";
-import Link from "next/link";
 
 export function CategoryHeroSection({
   category,
@@ -40,33 +40,14 @@ export function CategoryHeroSection({
                   {category.heroKicker}
                 </p>
 
-                <nav
-                  aria-label="Breadcrumb"
+                <BreadcrumbNav
                   className="pointer-events-auto hidden text-caption font-medium text-white/75 sm:block"
-                >
-                  <ol className="flex items-center gap-1.5">
-                    <li>
-                      <Link href="/" className="transition-colors hover:text-white">
-                        Главная
-                      </Link>
-                    </li>
-                    <li aria-hidden className="text-white/45">
-                      ›
-                    </li>
-                    <li>
-                      <Link
-                        href={homeAnchor("#categories")}
-                        className="transition-colors hover:text-white"
-                      >
-                        Категории
-                      </Link>
-                    </li>
-                    <li aria-hidden className="text-white/45">
-                      ›
-                    </li>
-                    <li className="text-white">{category.title}</li>
-                  </ol>
-                </nav>
+                  items={[
+                    { label: "Главная", href: "/" },
+                    { label: "Категории", href: homeAnchor("#categories") },
+                    { label: category.title },
+                  ]}
+                />
               </div>
 
               {category.goods.length > 0 ? (

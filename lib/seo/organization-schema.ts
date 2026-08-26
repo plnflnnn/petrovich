@@ -14,12 +14,13 @@ export function getOrganizationSchema(): Record<string, unknown> {
     name: siteHeaderContent.legalName,
     alternateName: siteHeaderContent.publicSiteName,
     description:
-      "Доставка строительных и отделочных материалов из Новосибирска в Каргат, Каргатский район и другие районы Новосибирской области. Кровля, заборы, окна, двери, фасад, утеплитель, гипсокартон, пиломатериалы. Также ковка, хозтехника под заказ и грузоперевозки.",
+      "Строительные и отделочные материалы в Каргате и Каргатском районе: кровля, заборы, окна, двери, фасад, утеплитель, гипсокартон, пиломатериалы. Доставка из Новосибирска. Также ковка, хозтехника под заказ и грузоперевозки.",
     url: absoluteSiteUrl("/"),
     telephone: siteHeaderContent.phoneTel,
     email: siteHeaderContent.email,
     image: absoluteSiteUrl("/og.png"),
     logo: absoluteSiteUrl("/og.png"),
+    mainEntityOfPage: { "@id": absoluteSiteUrl("/#website") },
     contactPoint: {
       "@type": "ContactPoint",
       telephone: siteHeaderContent.phoneTel,
@@ -40,6 +41,7 @@ export function getOrganizationSchema(): Record<string, unknown> {
       streetAddress: "ул. Ленина, 147",
       addressLocality: "Каргат",
       addressRegion: "Новосибирская область",
+      postalCode: "632402",
       addressCountry: "RU",
     },
     geo: {
