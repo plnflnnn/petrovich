@@ -56,13 +56,13 @@ export function HeroSection() {
               data-hero-animate
               className="max-w-hero-title text-4xl font-semibold leading-tighter tracking-tightest text-white sm:text-5xl lg:text-hero-xl"
             >
-              Строительные и отделочные материалы в Каргате
+              Строительные и отделочные материалы под заказ
             </h1>
             <p
               data-hero-animate
               className="mt-5 max-w-xl text-body leading-relaxed text-white/85"
             >
-              Кровля, заборы, окна, двери и другие материалы под заказ с доставкой из Новосибирска в Каргатский район. Поможем подобрать и рассчитать стоимость.
+              Кровля, заборы, окна, двери и другие материалы с доставкой из Новосибирска. Поможем подобрать и рассчитать стоимость.
             </p>
             <div
               data-hero-animate

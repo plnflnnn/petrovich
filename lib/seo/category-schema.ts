@@ -6,7 +6,7 @@ import { categoryPath } from "@/lib/utils/routes";
 type CategorySchemaInput = {
   slug: string;
   title: string;
-  meta: { description: string };
+  meta: { title: string; description: string };
   goods: Array<{
     title: string;
     body: string;
@@ -70,7 +70,7 @@ export function getCategoryPageSchema(
       "@type": "CollectionPage",
       "@id": `${pageUrl}#webpage`,
       url: pageUrl,
-      name: category.title,
+      name: category.meta.title,
       description: category.meta.description,
       isPartOf: { "@id": absoluteSiteUrl("/#website") },
       about: { "@id": absoluteSiteUrl("/#business") },

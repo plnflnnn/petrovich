@@ -16,6 +16,8 @@ export type Category = {
   title: string;
   heroKicker: string;
   heroLead: string;
+  /** Visible SEO intro under the hero — product + Каргат phrases for search. */
+  introParagraphs?: string[];
   heroSlides: SiteImage[];
   goods: CategoryGood[];
   priceItems: Array<{
