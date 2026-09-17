@@ -11,9 +11,6 @@ import { sendNotificationEmail } from "@/lib/email/send-notification-email";
 import { insertRequest } from "@/lib/db/requests";
 import { NextResponse } from "next/server";
 
-const CONTACT_EMAIL_TO =
-  process.env.CONTACT_EMAIL_TO?.trim();
-
 const SOURCE_LABELS: Record<string, string> = {
   "request-modal": "Всплывающая форма «Оставить заявку»",
   "contact-form": "Форма в разделе «Контакты»",
@@ -63,8 +60,14 @@ function emailHtml(payload: ContactPayload): string {
 async function sendContactEmail(
   payload: ContactPayload,
 ): Promise<{ ok: true } | { ok: false; error: "not_configured" | "send_failed" }> {
+  const to = process.env.CONTACT_EMAIL_TO?.trim();
+  if (!to) {
+    console.log("[contact] CONTACT_EMAIL_TO missing — payload:", payload);
+    return { ok: false, error: "not_configured" };
+  }
+
   const sent = await sendNotificationEmail({
-    to: CONTACT_EMAIL_TO,
+    to,
     subject: emailSubject(payload),
     text: emailText(payload),
     html: emailHtml(payload),
