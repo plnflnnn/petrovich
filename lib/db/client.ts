@@ -26,11 +26,15 @@ function getDatabaseSchema(connectionString: string) {
   }
 
   // Tables from 001_initial_schema.render.sql live in this schema.
-  if (/render\.com/i.test(connectionString)) {
+  if (/render\.com/i.test(connectionString) || /neon\.tech/i.test(connectionString)) {
     return "petrovichdb";
   }
 
   return null;
+}
+
+function usesNeonPooler(connectionString: string) {
+  return /neon\.tech/i.test(connectionString) && /-pooler\./i.test(connectionString);
 }
 
 function getPoolSslConfig(connectionString: string): ConnectionConfig["ssl"] {
@@ -61,7 +65,11 @@ export function getPool() {
     globalForDb.pgPool = new Pool({
       connectionString,
       ...(ssl ? { ssl } : {}),
-      ...(schema ? { options: `-c search_path=${schema}` } : {}),
+      // Neon PgBouncer rejects search_path in the startup packet.
+      // Keep it as a Pool option only for direct Postgres (Render, local).
+      ...(schema && !usesNeonPooler(connectionString)
+        ? { options: `-c search_path=${schema}` }
+        : {}),
     });
   }
 
