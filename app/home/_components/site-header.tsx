@@ -64,7 +64,6 @@ export function SiteHeader() {
 
   return (
     <header className="fixed inset-x-0 top-0 z-overlay bg-bg/85">
-      {/* Always in HTML so crawlers can discover category/service URLs even when dropdowns are closed. */}
       <nav className="sr-only" aria-label="Каталог сайта">
         <ul>
           {content.categories.items.map((cat) => (
